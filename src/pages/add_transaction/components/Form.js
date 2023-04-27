@@ -32,6 +32,7 @@ export const Form = () => {
   
   const [formValues, setformValues] = useState(values);
   const [test, setTest] = useState(formError1);
+  const [amount,setAmount]=useState(0)
 
   const monthYear = [
     "Jan ",
@@ -167,21 +168,25 @@ export const Form = () => {
 
   const checkAmount=(e)=>{
     console.log(e.target.value)
-    let formatting_options = {
-        style: 'currency',
-        currency: 'INR',
-        minimumFractionDigits: 3,
-     }
-    
-    let amount=e.target.value;
+    let Amount=e.target.value;
+    var parts = Amount.toString().split(".");
+    const numberPart = parts[0];
+    const decimalPart = parts[1];
+   
+
+   
+  
     let amountReg=/[0-9]/;
-    if(amountReg.test(amount)){
-        let price = parseInt(amount);
-     var finalAmount = price.toLocaleString("en-US",
-     formatting_options);
-     console.log(finalAmount,"final Amount")
-    //  setAmount((prev) => ({...prev, finalAmount}) )
-     setformValues((prev)=>({...prev,amount:finalAmount}))
+    if(amountReg.test(Amount)){
+    
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
+    let result=numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
+console.log(result,"regex for ,")
+   
+  
+     
+   
+     setformValues((prev)=>({...prev,amount:result}))
      setTest((prev)=>({...prev,amount:false}))
     }
     else{
@@ -207,19 +212,58 @@ export const Form = () => {
     }
   }
 
+const checkReceipt=(e)=>{
+ 
+ const preview = document.querySelector("img");
+ const file = document.querySelector("input[type=file]").files[0];
+ console.log(file)
+ const reader = new FileReader();
+ if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
 
 
-  const formhandler=(e)=>{
-    let commbineddata=[];
+  
+ reader.addEventListener(
+   "load",
+   () => {
+     // convert image file to base64 string
+     let Data=reader.result.split(";");
+     console.log(Data[0])
+   
+     
+      let img1=reader.result
+      setformValues((prev)=>({...prev,receipt:img1}))
+      setTest((prev)=>({...prev,receipt:false}))
+        console.log(formValues,test,"check receipt status")
+     
+     
+      preview.src = reader.result;
+      console.log("valid receipt")
+  
+   
+   },
+   false
+ );
 
-    // // test.forEach((element,index) => {
-    // //     if(test.element==false || test.element==""){
-    // //         alert("Some Fieldsdata are not valid Please solve the error first")
-    // //         e.preventDefault()
-            
-    // //     }
-        
-    // });
+  }
+  else{
+    console.log("invalid receipt")
+    setformValues((prev)=>({...prev,receipt:""}))
+    setTest((prev)=>({...prev,receipt:true}))
+    console.log(formValues,test,"check receipt status")
+    preview.src="";
+  }
+ if (file) {
+   reader.readAsDataURL(file);
+ }
+}
+
+
+ 
+
+const formhandler=(e)=>{
+    
+
+
     if( test.transactionDate==false &&
     test.monthYear==false &&
    test.transactionType==false &&
@@ -236,25 +280,36 @@ export const Form = () => {
     formValues.to!=="" &&
     formValues.amount!=="" &&
     formValues.receipt!=="" &&
-    formValues.notes!=="" ){
-
-console.log("success in formvalues" )
-// To store data
-let localdata=localStorage.getItem('FormData');
-if(localdata.length==0){
-    localStorage. setItem('Form Data', JSON. stringify(formValues)); 
+    formValues.notes!=="" )
+    {
+  
+      let localdata=localStorage.getItem('Form Value');
+      
+      if(localdata==null){
+    // To store data
+      let result=[];
+     result.push(formValues)
+     localStorage.setItem('Form Value', JSON.stringify(result)); 
+   
 }
+
 else{
-    let getdata=localStorage.getItem('FormData');
 
-    // commbineddata.push(getdata)
-    // combineddata.push(formValues)
+    let getdata=localStorage.getItem('Form Value');
 
-    // localStorage. setItem('Form Data', JSON. stringify(combineddata)); 
+  let resultData= JSON.parse(getdata)
+
+
+  resultData.push(formValues);
+    // combineddata.push(getdata)
+  
+  
+    localStorage.setItem('Form Value', JSON. stringify(resultData)); 
+  
+    e.preventDefault()
 }
 
-console.log(localStorage.getItem('Form Data'))
-e.preventDefault()
+
     }
 
 
@@ -269,9 +324,10 @@ e.preventDefault()
     alert("Please Enter valid fields data")
     e.preventDefault()
    }
-
+  
   
   }
+
   return (
     <div className="container">
       <div className="subcontainer">
@@ -387,7 +443,7 @@ e.preventDefault()
               <span class="input-group-text">Rs</span>
               <input
                 type="text"
-                class="form-control" value={formValues.amount} onChange={checkAmount} 
+                class="form-control" value={formValues.amount}  onChange={checkAmount} 
                 aria-label="Amount (to the nearest dollar)"
               />
               <span class="input-group-text">.00</span>
@@ -399,10 +455,12 @@ e.preventDefault()
             <label htmlFor="receipt" className="form-label">
               Receipt
             </label>
-            <input type="file" className="form-control"  onChange={(e)=>{formValues.receipt=e.target.value}}/>
-            <div id="emailHelp" className="form-text text-danger">
-              * Receipt upload size should not exceed 1 MB, allow only .png .jpg
-              .jpeg{" "}
+            <input type="file" className="form-control"  onChange={checkReceipt}/>
+            <div  className="form-text text-danger">
+              {test.receipt?'* Receipt upload size should not exceed 1 MB, allow only .png .jpg.jpeg':''}
+            </div>
+            <div  className=" text-danger">
+            <img src="" height="200" alt="Please upload only  .png .jpg.jpeg" />
             </div>
           </div>
           <div class="mb-3">
