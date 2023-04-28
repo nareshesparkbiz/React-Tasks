@@ -70,8 +70,13 @@ export const Form = () => {
     let transArray = transDate.split("-");
 
     if (transArray.length !== 0) {
-      if (parseInt(transArray[0]) <= year) {
-        
+      if (parseInt(transArray[0]) < year) {
+        setTest((prev) => ({ ...prev, transactionDate: false }));
+        setformValues((prev)=>({...prev, transactionDate:transDate}));
+      }
+      else{
+            if( parseInt(transArray[0]) ==year  )
+            {
         if (parseInt(transArray[1]) < parseInt(month)) {
            
             setTest((prev) => ({ ...prev, transactionDate: false }));
@@ -98,6 +103,8 @@ export const Form = () => {
         
         }
       }
+    }
+    
     } else {
       
       setTest((prev) => ({ ...prev, transactionDate: true }));
@@ -333,7 +340,7 @@ e.preventDefault()
       <div className="subcontainer">
         <h2 className="header-h2">Finance Tracker</h2>
         <form onSubmit={formhandler}>
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="transDate" className="form-label">
               Transaction Date
             </label>
@@ -351,17 +358,17 @@ e.preventDefault()
             </div>
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="monthYear" className="form-label">
               Month Year
             </label>
             <select 
-              className0="form-select" onChange={MonthYear}
+              className="form-select" onChange={MonthYear}
               aria-label="Default select example"
             >
-              <option selected>Select Month Year</option>
+              <option>Select Month Year</option>
               {monthYear.map((item,index) => (
-                <option value={index}>
+                <option key={item} value={index}>
                   {item}
                   {year}
                 </option>
@@ -376,7 +383,7 @@ e.preventDefault()
 
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="transacType" className="form-label">
               Transaction Type
             </label>
@@ -384,9 +391,9 @@ e.preventDefault()
               className="form-select" onChange={checkTransactionType}
               aria-label="Default select example"
             >
-              <option selected>Select Transaction Type</option>
+              <option >Select Transaction Type</option>
               {transactionType.map((item) => (
-                <option value={item}>{item}</option>
+                <option  key={item}value={item}>{item}</option>
               ))}
             </select>
             <div className="form-text  text-danger ">
@@ -398,32 +405,32 @@ e.preventDefault()
 
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="FromAccount" className="form-label">
               From Account
             </label>
             <select
-              className0="form-select"
+              className="form-select"
               aria-label="Default select example" onChange={(e)=>{setformValues((prev)=>({...prev,from:e.target.value}))}}
             >
-              <option selected>From Account</option>
+              <option >From Account</option>
               {fromAccount.map((item) => (
-                <option value={item}>{item}</option>
+                <option  key={item} value={item}>{item}</option>
               ))}
             </select>
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="toAccount" className="form-label">
               To Account
             </label>
             <select
-              className0="form-select"
+              className="form-select"
               aria-label="Default select example" onChange={checkTo}
             >
-              <option selected>To Account</option>
+              <option >To Account</option>
               {fromAccount.map((item) => (
-                <option value={item}>{item}</option>
+                <option  key={item}value={item}>{item}</option>
               ))}
             </select>
             <div className="form-text  text-danger ">
@@ -434,12 +441,12 @@ e.preventDefault()
           </div>
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="amount" className="form-label">
               Amount
             </label>
 
-            <div class="input-group mb-3">
+            <div className="input-group mb-3">
               <span class="input-group-text">Rs</span>
               <input
                 type="text"
@@ -451,7 +458,7 @@ e.preventDefault()
             <div i className="form-text text-danger">{test.amount?"Please Enter only Numeric Values":''}</div>
           </div>
 
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="receipt" className="form-label">
               Receipt
             </label>
@@ -463,17 +470,17 @@ e.preventDefault()
             <img src="" height="200" alt="Please upload only  .png .jpg.jpeg" />
             </div>
           </div>
-          <div class="mb-3">
+          <div className="mb-3">
             <label htmlFor="notes" className="form-label">
               Notes
             </label>
-            <div class="form-floating">
+            <div className="form-floating">
               <textarea
-                class="form-control" onChange={checkNotes}
+                className="form-control" onChange={checkNotes}
                 placeholder="Leave a comment here"
                 id="floatingTextarea"
               ></textarea>
-              <label for="floatingTextarea">Enter Note Here</label>
+              <label htmlFor="floatingTextarea">Enter Note Here</label>
             </div>
             <div i className="form-text text-danger">{test.notes?"You only Enter 250 or less Characters in notes":''}</div>
           </div>

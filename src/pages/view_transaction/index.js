@@ -1,8 +1,12 @@
- import React, { useState }  from "react";
-import { useLocation } from "react-router-dom";
+ import React, { useEffect, useState }  from "react";
+import { useLocation, useParams } from "react-router-dom";
  export const View=()=>{
  const location=useLocation();
  const data=location.state;
+
+
+ const {id}=useParams();
+
 
 const [zoomin,setzoomin]=useState({
     height:100,
@@ -35,6 +39,14 @@ const [zoomout,setzoomout]=useState({
 
 
  }
+ useEffect(()=>{
+
+ },[zoomin])
+
+
+ useEffect(()=>{
+
+ },[zoomout])
 
  const zoomOut=()=>{
     
@@ -69,7 +81,7 @@ document.querySelector('.but2').style. visibility='hidden';
                 <tbody>
                     <tr>
                         <th>Transaction ID</th>
-                        <td></td>
+                        <td>{id}</td>
                     </tr>
                     <tr>
                     <th>Transaction Date:</th>

@@ -13,7 +13,7 @@ function App() {
 
       <Route path="/" element={<AddTransaction/>}/>
       <Route path='/show-table' element={<ShowTable/>}/>
-      <Route path="/view-transaction" element={<View/>}/>
+      <Route path="/all-transaction/:id" element={<View/>}/>
 
       
 

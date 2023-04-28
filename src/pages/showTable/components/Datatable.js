@@ -4,11 +4,7 @@ import {Link} from 'react-router-dom'
 
 export const DataTable=(props)=>{
     const result=props.data;
-    console.log(result,"sdfsdfsdfsdsdfsd")
-    // useEffect(()=>{
-
-    // },[result])
-
+   
 
 return(
   result.map((element,index)=>(
@@ -21,7 +17,7 @@ return(
             <td>{element.amount}</td>
             <td>{element.receipt.slice(0,22)}</td>
             <td>{element.notes}</td>
-            <td><Link to="/view-transaction" state={element} >View</Link></td>
+            <td><Link to={`/all-transaction/${index+1}`} state={element} >View</Link></td>
 
         </tr>
     ))  
