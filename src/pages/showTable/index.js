@@ -16,12 +16,14 @@ export const ShowTable = () => {
   const [dataLength, setdataLength] = useState(totalData);
   const [pagecount, setpagecount] = useState();
   const [perPage,setperPage]=useState(4)
+  const [isSortClick,setIsSortClick]=useState(0);
 
   //  let data1=tabledata1[0]
    let data1=data.slice(0,perPage)
    console.log(data1,"data1")
 
   const [table1, settable1] = useState(data1);
+  const [cuurentSortElement,setCuurentSortElement]=useState();
 
   var totalData = data.length;
   
@@ -50,25 +52,25 @@ const dataSort = (list, key, sortType) => {
           var x = a[key];
           var y = b[key];
           if (sortType === 'asc') {
-              if (key === 'Transaction_Date') {
+              if (key == 'transactionDate') {
                   return new Date(x) - new Date(y);
               }
-              if (key === 'Month_Year') {
-                  return MonthYear.indexOf(x) - MonthYear.indexOf(y);
+              if (key == 'monthYear') {
+                  return (x -y);
               }
-              if (key === 'Amount') {
+              if (key == 'amount') {
                   x = Number(x.replaceAll(',', ''))
                   y = Number(y.replaceAll(',', ''))
                   return ((x < y) ? -1 : (x > y) ? 1 : 0)
               }
               return ((x < y) ? -1 : (x > y) ? 1 : 0)
           } else {
-              if (key === 'Transaction_Date') {
+              if (key == 'transactionDate') {
                   return new Date(y) - new Date(x);
-              } if (key === 'Month_Year') {
-                  return MonthYear.indexOf(y) - MonthYear.indexOf(x);
+              } if (key == 'monthYear') {
+                return (x -y);
               }
-              if (key === 'Amount') {
+              if (key == 'amount') {
                   x = Number(x.replaceAll(',', ''))
                   y = Number(y.replaceAll(',', ''))
                   return ((x > y) ? -1 : (x < y) ? 1 : 0)
@@ -82,23 +84,23 @@ const dataSort = (list, key, sortType) => {
 
 
 
-          const convertSort = ( listdata,elementName) => {
+          const convertSort = (listData,elementName) => {
             if ((isSortClick === 0) || (elementName !== cuurentSortElement)) {
                 console.log("ASC - ", elementName);
                 const shortedArray = dataSort(listData, elementName, 'asc');
-                setAllTransactionData(shortedArray);
+               settable1(shortedArray);
                 setIsSortClick(1);
                 setCuurentSortElement(elementName);
             }
             if ((isSortClick === 1) && (elementName === cuurentSortElement)) {
                 console.log('DESC - ', elementName)
                 const shortedArray = dataSort(listData, elementName);
-                setAllTransactionData(shortedArray);
+                settable1(shortedArray);
                 setIsSortClick(2);
             }
             if ((isSortClick === 2) && (elementName === cuurentSortElement)) {
                 console.log('INIT - ', elementName)
-                setAllTransactionData(myData);
+                settable1(table1);
                 setIsSortClick(0);
             }
         }
@@ -106,7 +108,7 @@ const dataSort = (list, key, sortType) => {
  
  
 // let count=1;
-//   const convertSort = (column) => {
+//   const convertSort = (data,column) => {
 
 //     let temp = [...table1];
 
@@ -334,60 +336,57 @@ const dataSort = (list, key, sortType) => {
 //     settable1(temp);
 
     
-//       // if(transDate['column']==="transactiondate"){
-//       //   let checkOrder=transDate['order']
-//       //   console.log(checkOrder)
+      // if(transDate['column']==="transactiondate"){
+      //   let checkOrder=transDate['order']
+      //   console.log(checkOrder)
       
 
-//       //   // console.log(checkOrder,"transactiondate")
-//       //   switch(checkOrder){
-//       //     case "":
-//       //       console.log("nothing")
-//       //       settable1(temp);
-//       //       checkOrder='Asc';
-//       //       settranDate(checkOrder);
+      //   // console.log(checkOrder,"transactiondate")
+      //   switch(checkOrder){
+      //     case "":
+      //       console.log("nothing")
+      //       settable1(temp);
+      //       checkOrder='Asc';
+      //       settranDate(checkOrder);
 
       
 
-//       //       break;
-//       //     case 'Asc':
-//       //       console.log("Asc")
-//       //       temp.sort((a, b) => {
-//       //         if (a[column] > b[column]) {
-//       //            return 1;
-//       //          } else {
-//       //            return -1;
-//       //          }
-//       //        });
-//       //        settable1(temp);
-//       //       checkOrder='Desc';
-//       //       settranDate(checkOrder);
-//       //       break;
-//       //     default:
-//       //       console.log("desc")
+      //       break;
+      //     case 'Asc':
+      //       console.log("Asc")
+      //       temp.sort((a, b) => {
+      //         if (a[column] > b[column]) {
+      //            return 1;
+      //          } else {
+      //            return -1;
+      //          }
+      //        });
+      //        settable1(temp);
+      //       checkOrder='Desc';
+      //       settranDate(checkOrder);
+      //       break;
+      //     default:
+      //       console.log("desc")
 
-//       //       temp.sort((a, b) => {
-//       //         if (a[column] < b[column]) {
-//       //            return 1;
-//       //          } else {
-//       //            return -1;
-//       //          }
-//       //        });
-//       //        settable1(temp);
+      //       temp.sort((a, b) => {
+      //         if (a[column] < b[column]) {
+      //            return 1;
+      //          } else {
+      //            return -1;
+      //          }
+      //        });
+      //        settable1(temp);
 
-//       //         checkOrder=""
-//       //         settranDate(checkOrder);
-//       //   }
+      //         checkOrder=""
+      //         settranDate(checkOrder);
+      //   }
         
-//       //   console.log(checkOrder,"check order")
+      //   console.log(checkOrder,"check order")
       
-//       // }
+      // }
   
-   
-    
-
-    
-//   };
+     
+  
 
   function group(event) {
     const grouptype = event.target.value;
@@ -445,6 +444,9 @@ const dataSort = (list, key, sortType) => {
   console.log(pageno,"pageno")  
 
 
+
+
+
   return (
     <div className="container">
       <div className="sub-container">
@@ -479,11 +481,11 @@ const dataSort = (list, key, sortType) => {
                 <tr>
                   <th
                     scope="col"
-                    onClick={() => convertSort(data,"Transaction_Date")}
+                    onClick={() => convertSort(data,"transactionDate")}
                   >
                     Transaction Date
                   </th>
-                  <th scope="col" onClick={() => convertSort(data,"Month_Year")}>
+                  <th scope="col" onClick={() => convertSort(data,"monthYear")}>
                     Month Year
                   </th>
                   <th
@@ -498,7 +500,7 @@ const dataSort = (list, key, sortType) => {
                   <th scope="col" onClick={() => convertSort(data,"to")}>
                     To Account
                   </th>
-                  <th scope="col" onClick={() => convertSort(data,"Amount")}>
+                  <th scope="col" onClick={() => convertSort(data,"amount")}>
                     Amount
                   </th>
                   <th scope="col">Receipt</th>
