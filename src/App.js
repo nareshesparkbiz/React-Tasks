@@ -7,6 +7,7 @@ import {BrowserRouter , Routes, Route} from "react-router-dom";
 import {Navbar} from './pages/navbar/components/Navbar';
 import {ShowTable} from './pages/showTable';
 import {View} from './pages/view_transaction';
+import {RegisterMain} from './pages/registration';
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,8 @@ function App() {
       <Route path='/show-table' element={<ShowTable/>}/>
       <Route path="/all-transaction/:id" element={<View/>}/>
       <Route path="/all-transaction/edit-transaction/:id" element={<UpdateTransaction/>}/>
+      <Route path="/register" element={<RegisterMain/>}/>
+
 
 
       
