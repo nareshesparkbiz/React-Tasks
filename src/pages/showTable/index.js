@@ -6,26 +6,19 @@ import "../../pages/showTable/css/showTable.css";
 export const ShowTable = () => {
   var groupdata1;
 
-  const result1 = localStorage.getItem("Form Value");
+  const result1 = localStorage.getItem("Formnew");
+
   const tabledata1 = JSON.parse(result1);
   var flag = 0;
   const [data, setdata] = useState(tabledata1);
  
   const [Groupby, setGroupby] = useState();
   const [Grp, setGrp] = useState(true);
-  const [dataLength, setdataLength] = useState(totalData);
-  const [pagecount, setpagecount] = useState();
-  const [perPage,setperPage]=useState(4)
-  const [isSortClick,setIsSortClick]=useState(0);
+ 
+  // const [isSortClick,setIsSortClick]=useState(0);
 
   //  let data1=tabledata1[0]
-   let data1=data.slice(0,perPage)
-   console.log(data1,"data1")
-
-  const [table1, settable1] = useState(data1);
-  const [cuurentSortElement,setCuurentSortElement]=useState();
-
-  var totalData = data.length;
+  
   
   
   const [sortData,setsortData]=useState(
@@ -46,64 +39,7 @@ export const ShowTable = () => {
 
 // ----------------------------sorting------------------------------------
 
-const dataSort = (list, key, sortType) => {
-  return list.sort(
-      function (a, b) {
-          var x = a[key];
-          var y = b[key];
-          if (sortType === 'asc') {
-              if (key == 'transactionDate') {
-                  return new Date(x) - new Date(y);
-              }
-              if (key == 'monthYear') {
-                  return (x -y);
-              }
-              if (key == 'amount') {
-                  x = Number(x.replaceAll(',', ''))
-                  y = Number(y.replaceAll(',', ''))
-                  return ((x < y) ? -1 : (x > y) ? 1 : 0)
-              }
-              return ((x < y) ? -1 : (x > y) ? 1 : 0)
-          } else {
-              if (key == 'transactionDate') {
-                  return new Date(y) - new Date(x);
-              } if (key == 'monthYear') {
-                return (x -y);
-              }
-              if (key == 'amount') {
-                  x = Number(x.replaceAll(',', ''))
-                  y = Number(y.replaceAll(',', ''))
-                  return ((x > y) ? -1 : (x < y) ? 1 : 0)
-              }
-              return ((x > y) ? -1 : (x < y) ? 1 : 0)
-          }
-      }
-  )
 
-}
-
-
-
-          const convertSort = (listData,elementName) => {
-            if ((isSortClick === 0) || (elementName !== cuurentSortElement)) {
-                console.log("ASC - ", elementName);
-                const shortedArray = dataSort(listData, elementName, 'asc');
-               settable1(shortedArray);
-                setIsSortClick(1);
-                setCuurentSortElement(elementName);
-            }
-            if ((isSortClick === 1) && (elementName === cuurentSortElement)) {
-                console.log('DESC - ', elementName)
-                const shortedArray = dataSort(listData, elementName);
-                settable1(shortedArray);
-                setIsSortClick(2);
-            }
-            if ((isSortClick === 2) && (elementName === cuurentSortElement)) {
-                console.log('INIT - ', elementName)
-                settable1(table1);
-                setIsSortClick(0);
-            }
-        }
 
  
  
@@ -418,31 +354,7 @@ const dataSort = (list, key, sortType) => {
   }
 
   // --------------------------Pagination-------------------------------------------
-  const pagehandler=(item)=>{
-    console.log(item,"item selected")
-    let tableData = [...data];
-    const offset = item*perPage;
-    console.log(offset)
-   
   
-      const slice = tableData.slice(offset,offset+perPage);
-      console.log(slice,"slice data")
-      settable1(slice);
-    
-
-  }
-
-
-  let pageNo=Math.ceil(totalData /perPage);
-  const pageno=[];
-  for(let i=1;i<=pageNo;i++){
-   
-
-    pageno.push(i)
-
-  }
-  console.log(pageno,"pageno")  
-
 
 
 
@@ -451,7 +363,7 @@ const dataSort = (list, key, sortType) => {
     <div className="container">
       <div className="sub-container">
         {Grp ? (
-          dataLength == 0 ? (
+          data.length == 0 ? (
             <table className="table">
               <thead>
                 <tr>
@@ -476,45 +388,9 @@ const dataSort = (list, key, sortType) => {
             <div className="container">
 
          
-            <table className="table">
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    onClick={() => convertSort(data,"transactionDate")}
-                  >
-                    Transaction Date
-                  </th>
-                  <th scope="col" onClick={() => convertSort(data,"monthYear")}>
-                    Month Year
-                  </th>
-                  <th
-                    scope="col"
-                    onClick={() => convertSort(data,"transactionType")}
-                  >
-                    Transaction Type
-                  </th>
-                  <th scope="col" onClick={() => convertSort(data,"from")}>
-                    From Account
-                  </th>
-                  <th scope="col" onClick={() => convertSort(data,"to")}>
-                    To Account
-                  </th>
-                  <th scope="col" onClick={() => convertSort(data,"amount")}>
-                    Amount
-                  </th>
-                  <th scope="col">Receipt</th>
-                  <th scope="col" onClick={() => convertSort(data,"notes")}>
-                    Notes
-                  </th>
-                  <th scope="col">View</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <DataTable data={table1} />
-              </tbody>
-            </table>
+           
+                <DataTable data={data}  />
+              
           
   
             </div>
@@ -523,52 +399,14 @@ const dataSort = (list, key, sortType) => {
          (
           Object.values(Groupby).map((item, index) => (
             <div className="container1">
-              <table className="table" key={index}>
-                <thead>
-                  <tr>
-                    <th>Transaction Date</th>
-                    <th>Month Year</th>
-                    <th>Transaction Type</th>
-                    <th>From Account</th>
-                    <th>To Account</th>
-                    <th>Amount</th>
-                    <th>Receipt</th>
-                    <th>Aa Notes</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {item.map((element, index) => (
-                    <tr key={index}>
-                      <td>{element.transactionDate}</td>
-                      <td>{element.monthYear}</td>
-                      <td>{element.transactionType}</td>
-                      <td>{element.from}</td>
-                      <td>{element.to}</td>
-                      <td>{element.amount}</td>
-                      <td>{element.receipt.slice(0, 22)}</td>
-                      <td>{element.notes}</td>
-                      <td>
-                        <Link to="/view-transaction" state={element}>
-                          View
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+             <DataTable data={item} />
+      
             </div>
           ))
         )}
       </div>
 
-      <div className="pageno">
-              {pageno.map((item)=>(
-               <span  key={item} className="page" onClick={(e)=>{pagehandler(item-1)}}>Page {item}</span>
-              ))}
-            </div>
-
+    
 
 
 +
@@ -581,7 +419,7 @@ const dataSort = (list, key, sortType) => {
           onChange={group}
         >
           <option >Select Fields for Group By</option>
-          {Object.keys(table1[0]).map((item) => (
+          {Object.keys(data[0]).map((item) => (
             <option  key={item} value={item}>{item}</option>
           ))}
         </select>
@@ -589,3 +427,5 @@ const dataSort = (list, key, sortType) => {
     </div>
   );
 };
+
+

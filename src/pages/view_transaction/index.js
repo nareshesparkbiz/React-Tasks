@@ -81,7 +81,7 @@ document.querySelector('.but2').style. visibility='hidden';
                 <tbody>
                     <tr>
                         <th>Transaction ID</th>
-                        <td>{id}</td>
+                        <td>{data.id}</td>
                     </tr>
                     <tr>
                     <th>Transaction Date:</th>

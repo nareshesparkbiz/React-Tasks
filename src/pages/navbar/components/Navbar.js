@@ -21,7 +21,7 @@ export function Navbar(props) {
         <Link className="nav-link active" aria-current="page" to="/show-table">Transaction table</Link>
         </li>
         <li className="nav-item dropdown">
-          <Link className='nav-link' to="/form">Form</Link>
+          <Link className='nav-link' to="/form">Update Transactions</Link>
          
         </li>
 
