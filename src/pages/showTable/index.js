@@ -11,318 +11,305 @@ export const ShowTable = () => {
   const tabledata1 = JSON.parse(result1);
   var flag = 0;
   const [data, setdata] = useState(tabledata1);
- 
+
   const [Groupby, setGroupby] = useState();
   const [Grp, setGrp] = useState(true);
- 
+
   // const [isSortClick,setIsSortClick]=useState(0);
 
   //  let data1=tabledata1[0]
-  
-  
-  
-  const [sortData,setsortData]=useState(
-    [
-      { column:"transactiondate", order:" ", type:'date',},
-    {  column:"monthYear",order:"", type:"date",},
-    {  column:"transactionType",  order:"", type:"string",},
-     {  column:"from",order:"", type:"string",},
-     {column:"to", order:"", type:"string",},
-     {column:" amount", type:"int",},
-     { column:" notes",order:"", type:"string",}
-   
-    ]
-   )
 
-   const [transDate,settranDate]=useState( { column:"transactiondate", order:" ", type:'date',});
+  const [sortData, setsortData] = useState([
+    { column: "transactiondate", order: " ", type: "date" },
+    { column: "monthYear", order: "", type: "date" },
+    { column: "transactionType", order: "", type: "string" },
+    { column: "from", order: "", type: "string" },
+    { column: "to", order: "", type: "string" },
+    { column: " amount", type: "int" },
+    { column: " notes", order: "", type: "string" },
+  ]);
 
+  const [transDate, settranDate] = useState({
+    column: "transactiondate",
+    order: " ",
+    type: "date",
+  });
 
-// ----------------------------sorting------------------------------------
+  // ----------------------------sorting------------------------------------
 
+  // let count=1;
+  //   const convertSort = (data,column) => {
 
+  //     let temp = [...table1];
 
- 
- 
-// let count=1;
-//   const convertSort = (data,column) => {
+  //     let sortdata={...sortData};
 
-//     let temp = [...table1];
+  //     if(column=="notes"){
 
-//     let sortdata={...sortData};
+  //       if(count==1){
 
-//     if(column=="notes"){
- 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
-//     if(column=="transactionDate"){
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
 
-//     if(column=="monthYear"){
+  //         }
 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
-    
-//     if(column=="transactionType"){
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
+  //     if(column=="transactionDate"){
 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
+  //       if(count==1){
 
-//     if(column=="from"){
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
 
-//     if(column=="to"){
+  //         }
 
-//       if(count==1){
-      
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           count=1;
-//         }
-//     }
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
 
-//     if(column=="amount"){
+  //     if(column=="monthYear"){
 
-//       // console.log(temp.amount,"amount")
-//       if(count==1){
-//       console.log('ASC')
-//         temp.sort((a, b) => {
-//           if (a[column] > b[column]) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         });
-//         count=count+1;
-        
-//         }
-//         if(count==2){
-//           console.log('Desc')
-//           temp.sort((a, b) => {
-//             if (a[column] < b[column]) {
-//               return 1;
-//             } else {
-//               return -1;
-//             }
-//           });
-//           count=count+1;
-    
-//         }
-    
-//         if(count==3){
-//           console.log('nothing')
-//           count=1;
-//         }
-//     }
- 
-//     settable1(temp);
+  //       if(count==1){
 
-    
-      // if(transDate['column']==="transactiondate"){
-      //   let checkOrder=transDate['order']
-      //   console.log(checkOrder)
-      
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
 
-      //   // console.log(checkOrder,"transactiondate")
-      //   switch(checkOrder){
-      //     case "":
-      //       console.log("nothing")
-      //       settable1(temp);
-      //       checkOrder='Asc';
-      //       settranDate(checkOrder);
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
 
-      
+  //         }
 
-      //       break;
-      //     case 'Asc':
-      //       console.log("Asc")
-      //       temp.sort((a, b) => {
-      //         if (a[column] > b[column]) {
-      //            return 1;
-      //          } else {
-      //            return -1;
-      //          }
-      //        });
-      //        settable1(temp);
-      //       checkOrder='Desc';
-      //       settranDate(checkOrder);
-      //       break;
-      //     default:
-      //       console.log("desc")
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
 
-      //       temp.sort((a, b) => {
-      //         if (a[column] < b[column]) {
-      //            return 1;
-      //          } else {
-      //            return -1;
-      //          }
-      //        });
-      //        settable1(temp);
+  //     if(column=="transactionType"){
 
-      //         checkOrder=""
-      //         settranDate(checkOrder);
-      //   }
-        
-      //   console.log(checkOrder,"check order")
-      
-      // }
-  
-     
-  
+  //       if(count==1){
+
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
+
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
+
+  //         }
+
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
+
+  //     if(column=="from"){
+
+  //       if(count==1){
+
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
+
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
+
+  //         }
+
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
+
+  //     if(column=="to"){
+
+  //       if(count==1){
+
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
+
+  //         }
+  //         if(count==2){
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
+
+  //         }
+
+  //         if(count==3){
+  //           count=1;
+  //         }
+  //     }
+
+  //     if(column=="amount"){
+
+  //       // console.log(temp.amount,"amount")
+  //       if(count==1){
+  //       console.log('ASC')
+  //         temp.sort((a, b) => {
+  //           if (a[column] > b[column]) {
+  //             return 1;
+  //           } else {
+  //             return -1;
+  //           }
+  //         });
+  //         count=count+1;
+
+  //         }
+  //         if(count==2){
+  //           console.log('Desc')
+  //           temp.sort((a, b) => {
+  //             if (a[column] < b[column]) {
+  //               return 1;
+  //             } else {
+  //               return -1;
+  //             }
+  //           });
+  //           count=count+1;
+
+  //         }
+
+  //         if(count==3){
+  //           console.log('nothing')
+  //           count=1;
+  //         }
+  //     }
+
+  //     settable1(temp);
+
+  // if(transDate['column']==="transactiondate"){
+  //   let checkOrder=transDate['order']
+  //   console.log(checkOrder)
+
+  //   // console.log(checkOrder,"transactiondate")
+  //   switch(checkOrder){
+  //     case "":
+  //       console.log("nothing")
+  //       settable1(temp);
+  //       checkOrder='Asc';
+  //       settranDate(checkOrder);
+
+  //       break;
+  //     case 'Asc':
+  //       console.log("Asc")
+  //       temp.sort((a, b) => {
+  //         if (a[column] > b[column]) {
+  //            return 1;
+  //          } else {
+  //            return -1;
+  //          }
+  //        });
+  //        settable1(temp);
+  //       checkOrder='Desc';
+  //       settranDate(checkOrder);
+  //       break;
+  //     default:
+  //       console.log("desc")
+
+  //       temp.sort((a, b) => {
+  //         if (a[column] < b[column]) {
+  //            return 1;
+  //          } else {
+  //            return -1;
+  //          }
+  //        });
+  //        settable1(temp);
+
+  //         checkOrder=""
+  //         settranDate(checkOrder);
+  //   }
+
+  //   console.log(checkOrder,"check order")
+
+  // }
 
   function group(event) {
     const grouptype = event.target.value;
@@ -337,7 +324,7 @@ export const ShowTable = () => {
           (result[currentValue[key]] = result[currentValue[key]] || []).push(
             currentValue
           );
-          console.log(typeof result);
+          console.log(result, "initial value");
           return result;
         }, []);
         return naresh;
@@ -354,10 +341,6 @@ export const ShowTable = () => {
   }
 
   // --------------------------Pagination-------------------------------------------
-  
-
-
-
 
   return (
     <div className="container">
@@ -386,46 +369,34 @@ export const ShowTable = () => {
             </table>
           ) : (
             <div className="container">
+     
 
-         
-           
-                <DataTable data={data}  />
-              
-          
-  
+              <DataTable data={data} />
             </div>
           )
-        ) :
-         (
+        ) : (
           Object.values(Groupby).map((item, index) => (
             <div className="container1">
-             <DataTable data={item} />
-      
+              <DataTable data={item} />
             </div>
           ))
         )}
       </div>
-
-    
-
-
-+
-
-
+      +
       <div className="sub-container">
         <select
           className="form-select form-select-sm"
           aria-label=".form-select-sm example"
           onChange={group}
         >
-          <option >Select Fields for Group By</option>
+          <option>Select Fields for Group By</option>
           {Object.keys(data[0]).map((item) => (
-            <option  key={item} value={item}>{item}</option>
+            <option key={item} value={item}>
+              {item}
+            </option>
           ))}
         </select>
       </div>
     </div>
   );
 };
-
-

@@ -4,24 +4,43 @@ import { Link } from "react-router-dom";
 
 export const DataTable = (props) => {
   const result = props.data;
-  const [isSortClick, setIsSortClick] = useState(0);
+  console.log(typeof(result),"dfgfdgdfgdfgdfg")
 
-  const [dataLength, setdataLength] = useState(totalData);
-  const [pagecount, setpagecount] = useState();
-  const [perPage, setperPage] = useState(4);
+  const [originalData,setOriginalData]=useState(result)
+  console.log(typeof(originalData))
+
+  const [isSortClick, setIsSortClick] = useState(0);
+  const [searched,setsearched]=useState(originalData)
+  
+
+  // const [dataLength, setdataLength] = useState(totalData);
+  // const [pagecount, setpagecount] = useState();
+  const [perPage, setperPage] = useState(2);
 
   const [cuurentSortElement, setCuurentSortElement] = useState();
 
-  let data1 = result.slice(0, perPage);
-  console.log(data1, "data1");
 
-  const [table1, settable1] = useState(data1);
 
-  var totalData = result.length;
+
+  const [table1, settable1] = useState([]);
+  
+  console.log(table1,"table1 data")
+
+  useEffect(()=>{
+    let sliceData= searched.slice(0, perPage);
+    console.log(sliceData, "data1");
+    settable1(sliceData)
+  },[searched])
+
+ 
+
+  var totalData = searched.length;
+
+  // -------------------Pagination----------------
 
   const pagehandler = (item) => {   
     console.log(item, "item selected");
-    let tableData = [...result];
+    let tableData = [...searched];
     const offset = item * perPage;
     console.log(offset);
 
@@ -36,6 +55,9 @@ export const DataTable = (props) => {
     pageno.push(i);
   }
   console.log(pageno, "pageno");
+
+
+  // -------------------------Sorting--------------------------
 
   const dataSort = (list, key, sortType) => {
     return list.sort(function (a, b) {
@@ -91,14 +113,70 @@ export const DataTable = (props) => {
     }
     if (isSortClick === 2 && elementName === cuurentSortElement) {
       console.log("INIT - ", elementName);
-      settable1(data1);
+      setsearched(result);
       console.log(table1,"Without sort")
       setIsSortClick(0);
     }
   };
 
+
+
+  // ----------------------------------------searching------------------------------
+const searchHandler=()=>{
+  const userData={...originalData}
+  console.log(userData)
+
+  const searchField=document.querySelector("#search").value
+console.log(searchField)
+
+const filteredPersons = Object.values(userData).filter(
+  person => {
+    
+    return (
+    
+      person
+      .from
+      .toLowerCase()
+      .includes(searchField.toLowerCase())
+      ||
+      person
+      .transactionDate
+      
+      .includes(searchField.toLowerCase())
+      ||
+      person
+      .transactionType
+      .toLowerCase()
+      .includes(searchField.toLowerCase())
+      ||
+    
+      person
+      .to
+      .toLowerCase()
+      .includes(searchField.toLowerCase())
+    );
+  }
+
+
+);
+
+console.log(filteredPersons,"searched datat")
+
+setsearched(filteredPersons)
+
+}
+
+
   return (
     <>
+
+<div class="input-group">
+  <input type="search" id="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary" onClick={searchHandler}>search</button>
+</div>
+
+    <div className="container">
+
       <table className="table">
         <thead>
           <tr>
@@ -163,6 +241,7 @@ export const DataTable = (props) => {
           ))}
         </tbody>
       </table>
+      </div>
 
       <div className="pageno">
         {pageno.map((item) => (

@@ -8,6 +8,8 @@ export const Register=()=>{
         name:"",
         email:"",
         password:"",
+        login:false,
+        status:false
     })
 
     const [formerror,setformerror] = useState({
@@ -79,34 +81,39 @@ const passwordHandler=(e)=>{
         error.password=false;
 
         setformValue(data);
+        console.log(formValue)
         setformerror(error)  
     }
+
 
 }
 
 const RepasswordHandler=(e)=>{
     let repassword=e.target.value;
     let data={...formValue}
+    const originalPass=data.password
+    console.log(originalPass,"initail password")
     let error={...formerror}
 
     if(repassword==data.password){
-        data.password="";
+        
         error.repassword=true;
 
-        setformValue(data);
+    
         setformerror(error)  
     }
     else if( repassword.length<8 ){
-        data.password="";
         error.repassword=true;
 
-        setformValue(data);
+  
         setformerror(error)  
     }
     else{
        
         error.repassword=false;
-
+      
+  
+      console.log(formValue,"reapss")
         setformerror(error)  
 
     }
@@ -121,6 +128,33 @@ const formhandler=(e)=>{
     if(data.name!="" && data.email!="" && data.password!=""){
         if(error.name==false && error.email==false && error.password==false && error.repassword==false){
             alert("Thank You ")
+
+            let localdata = localStorage.getItem("user-data");
+
+            if (localdata == null) {
+              // To store data
+              let result = [];
+              result.push(formValue);
+              result[0]["id"] = 1;
+              console.log(result,"initial data");
+              localStorage.setItem("user-data", JSON.stringify(result));
+            } else {
+              let getdata = localStorage.getItem("user-data");
+              let resultData = JSON.parse(getdata);
+              
+                let previd = resultData.at(resultData.length-1).id;
+      
+                let newdata = {...formValue};
+                newdata["id"] = previd+1;
+      
+      
+                resultData.push(newdata);
+                // resultData
+                // combineddata.push(getdata)
+              console.log(resultData,"combined Data")
+                localStorage.setItem("user-data", JSON.stringify(resultData));
+    
+              }
         }
         else{
             alert("Please Enter Valid Fields data")

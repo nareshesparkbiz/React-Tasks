@@ -14,6 +14,12 @@ export function Navbar(props) {
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <li className="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/register">Register</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/login">Login</Link>
+        </li>
         <li className="nav-item">
           <Link className="nav-link active" aria-current="page" to="/">Add Transaction</Link>
         </li>
@@ -21,7 +27,7 @@ export function Navbar(props) {
         <Link className="nav-link active" aria-current="page" to="/show-table">Transaction table</Link>
         </li>
         <li className="nav-item dropdown">
-          <Link className='nav-link' to="/form">Update Transactions</Link>
+          <Link className='nav-link' to="/logout">Logout</Link>
          
         </li>
 
