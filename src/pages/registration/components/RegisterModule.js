@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Register=()=>{
@@ -40,6 +41,16 @@ else{
 }
 console.log(formValue,formerror)
 }
+
+const navigate = useNavigate();
+
+useEffect(()=>{
+  let localData = localStorage.getItem("auth_token");
+
+  if (localData) {
+    navigate("/show-table");
+  }
+},[])
 
 const emailHandler=(e)=>{
     let email=e.target.value;

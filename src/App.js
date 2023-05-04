@@ -10,7 +10,7 @@ import {View} from './pages/view_transaction';
 import {RegisterMain} from './pages/registration';
 import {LoginMain} from './pages/login';
 import {Protected} from './pages/authentication/components/Protected';
-import {Logout} from './pages/logout/component/Logout';
+
 function App() {
   return (
   <>
@@ -18,8 +18,10 @@ function App() {
     <BrowserRouter>
     <Navbar/>
     <Routes>
+
     <Route path="/register" element={<RegisterMain/>}/>
-    <Route path="/login" element={<Protected Component={LoginMain}/>}/>
+  
+    <Route path="/login" element={<LoginMain/>}/>
     
 
       <Route path="/" element={<Protected Component={AddTransaction}/>}/>
@@ -28,7 +30,7 @@ function App() {
       <Route path="/all-transaction/edit-transaction/:id" element={<Protected Component={UpdateTransaction}/>}/>
       
    
-      <Route path="/logout" element={<Logout/>}/>
+    
 
 
 

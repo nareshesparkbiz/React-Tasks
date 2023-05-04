@@ -1,10 +1,13 @@
-import React from "react";
-import {Login} from './components/Login';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Login } from "./components/Login";
 
-export const LoginMain=()=>{
-return(
+export const LoginMain = () => {
 
-    <Login/>
-)
+useEffect(()=>{
+    
+},[])
+  const navigate = useNavigate();
 
-}
+  return <Login />;
+};

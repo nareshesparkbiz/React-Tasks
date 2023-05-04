@@ -1,13 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { View } from "./../../view_transaction";
 import { Link } from "react-router-dom";
+import '.././css/showTable.css'
 
-export const DataTable = (props) => {
-  const result = props.data;
-  console.log(typeof(result),"dfgfdgdfgdfgdfg")
+export const DataTable = ({data}) => {
+  console.log({data})
 
-  const [originalData,setOriginalData]=useState(result)
-  console.log(typeof(originalData))
+
+ const[data123,setdata123]=useState(data)
+ console.log(data123,"setdata1")
+
+  const [originalData,setOriginalData]=useState(data);
+  // setOriginalData(result)
+  console.log({ originalData })
+  useEffect(()=> {
+    console.log('result called');
+
+  
+  },[originalData])
+  
+
+  // console.log(typeof(result),"dfgfdgdfgdfgdfg")
+
+
+// console.log(data,"data hai")
+// console.log(result,"result data hai")
+
+ 
+  // console.log(originalData,"set original data hai")
 
   const [isSortClick, setIsSortClick] = useState(0);
   const [searched,setsearched]=useState(originalData)
@@ -24,13 +44,14 @@ export const DataTable = (props) => {
 
   const [table1, settable1] = useState([]);
   
-  console.log(table1,"table1 data")
+  // console.log(table1,"table1 data")
 
   useEffect(()=>{
+   
     let sliceData= searched.slice(0, perPage);
-    console.log(sliceData, "data1");
+    // console.log(sliceData, "data1");
     settable1(sliceData)
-  },[searched])
+  },[searched,data])
 
  
 
@@ -39,13 +60,13 @@ export const DataTable = (props) => {
   // -------------------Pagination----------------
 
   const pagehandler = (item) => {   
-    console.log(item, "item selected");
+    // console.log(item, "item selected");
     let tableData = [...searched];
     const offset = item * perPage;
-    console.log(offset);
+    // console.log(offset);
 
     const slice = tableData.slice(offset, offset + perPage);
-    console.log(slice, "slice data");
+    // console.log(slice, "slice data");
     settable1(slice);
   };
 
@@ -54,7 +75,7 @@ export const DataTable = (props) => {
   for (let i = 1; i <= pageNo; i++) {
     pageno.push(i);
   }
-  console.log(pageno, "pageno");
+  // console.log(pageno, "pageno");
 
 
   // -------------------------Sorting--------------------------
@@ -81,7 +102,7 @@ export const DataTable = (props) => {
           return new Date(y) - new Date(x);
         }
         if (key == "monthYear") {
-          return x - y;
+          return y - x;
         }
         if (key == "amount") {
           x = Number(x.replaceAll(",", ""));
@@ -95,28 +116,33 @@ export const DataTable = (props) => {
 
   const convertSort = (listData, elementName) => {
     if (isSortClick === 0 || elementName !== cuurentSortElement) {
-      console.log("ASC - ", elementName);
+      // console.log("ASC - ", elementName);
       const shortedArray = dataSort(listData, elementName, "asc");
-      settable1(shortedArray);
-      console.log(table1,"Ascending sort")
+      setsearched(shortedArray);
+
+      document.querySelector('#'+elementName).innerHTML="↑"
+      // console.log(table1,"Ascending sort")
 
       setIsSortClick(1);
       setCuurentSortElement(elementName);
     }
     if (isSortClick === 1 && elementName === cuurentSortElement) {
-      console.log("DESC - ", elementName);
+      // console.log("DESC - ", elementName);
       const shortedArray = dataSort(listData, elementName);
-      settable1(shortedArray);
-      console.log(table1,"Descending sort")
+      setsearched(shortedArray);
+      // console.log(table1,"Descending sort")
+      document.querySelector('#'+elementName).innerHTML="↓"
 
       setIsSortClick(2);
     }
     if (isSortClick === 2 && elementName === cuurentSortElement) {
-      console.log("INIT - ", elementName);
-      setsearched(result);
-      console.log(table1,"Without sort")
+      // console.log("INIT - ", elementName);
+      setsearched(data);
+      // console.log(table1,"Without sort")
+      document.querySelector('#'+elementName).innerHTML=""
       setIsSortClick(0);
     }
+    
   };
 
 
@@ -124,10 +150,10 @@ export const DataTable = (props) => {
   // ----------------------------------------searching------------------------------
 const searchHandler=()=>{
   const userData={...originalData}
-  console.log(userData)
+  // console.log(userData)
 
   const searchField=document.querySelector("#search").value
-console.log(searchField)
+// console.log(searchField)
 
 const filteredPersons = Object.values(userData).filter(
   person => {
@@ -160,7 +186,7 @@ const filteredPersons = Object.values(userData).filter(
 
 );
 
-console.log(filteredPersons,"searched datat")
+// console.log(filteredPersons,"searched datat")
 
 setsearched(filteredPersons)
 
@@ -170,8 +196,8 @@ setsearched(filteredPersons)
   return (
     <>
 
-<div class="input-group">
-  <input type="search" id="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+<div className="input-group ">
+  <input type="search" id="search" className="form-control rounded searchButn" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
   <button type="button" class="btn btn-outline-primary" onClick={searchHandler}>search</button>
 </div>
 
@@ -182,31 +208,31 @@ setsearched(filteredPersons)
           <tr>
             <th
               scope="col"
-              onClick={() => convertSort(table1, "transactionDate")}
+              onClick={() => convertSort(searched, "transactionDate")}
             >
-              Transaction Date
+              Transaction Date <span id="transactionDate"></span>
             </th>
-            <th scope="col" onClick={() => convertSort(table1, "monthYear")}>
-              Month Year
+            <th scope="col" onClick={() => convertSort(searched, "monthYear")}>
+              Month Year<span id="monthYear"></span>
             </th>
             <th
               scope="col"
-              onClick={() => convertSort(table1, "transactionType")}
+              onClick={() => convertSort(searched, "transactionType")}
             >
-              Transaction Type
+              Transaction Type <span id="transactionType"></span>
             </th>
-            <th scope="col" onClick={() => convertSort(table1, "from")}>
-              From Account
+            <th scope="col" onClick={() => convertSort(searched, "from")}>
+              From Account <span id="from"></span>
             </th>
-            <th scope="col" onClick={() => convertSort(table1, "to")}>
-              To Account
+            <th scope="col" onClick={() => convertSort(searched, "to")}>
+              To Account <span id="to"></span>
             </th>
-            <th scope="col" onClick={() => convertSort(table1, "amount")}>
-              Amount
+            <th scope="col" onClick={() => convertSort(searched, "amount")}>
+              Amount <span id="amount"></span>
             </th>
             <th scope="col">Receipt</th>
-            <th scope="col" onClick={() => convertSort(table1, "notes")}>
-              Notes
+            <th scope="col" onClick={() => convertSort(searched, "notes")}>
+              Notes <span id="notes"></span>
             </th>
             <th scope="col">View</th>
             <th scope="col">Edit</th>
@@ -222,10 +248,10 @@ setsearched(filteredPersons)
               <td>{element.from}</td>
               <td>{element.to}</td>
               <td>{element.amount}</td>
-              <td>{element.receipt.slice(0, 22)}</td>
+              <td><img src={element.receipt} style={{height:'50px',width:'50px'}} alt="" /></td>
               <td>{element.notes}</td>
               <td>
-                <Link to={`/all-transaction/${index + 1}`} state={element}>
+                <Link to={`/all-transaction/${element.id}`} state={element}>
                   View
                 </Link>
               </td>
@@ -245,15 +271,10 @@ setsearched(filteredPersons)
 
       <div className="pageno">
         {pageno.map((item) => (
-          <span
-            key={item}
-            className="page"
-            onClick={(e) => {
-              pagehandler(item - 1);
-            }}
-          >
-            Page {item}
-          </span>
+          <button    key={item} className="btn btn-primary page"  onClick={(e) => {
+            pagehandler(item - 1);
+          }} > Page {item}</button>
+         
         ))}
       </div>
     </>

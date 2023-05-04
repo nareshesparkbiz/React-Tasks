@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import "./../css/Form.css";
+
+
 export const Form = (props) => {
+
   const updateData = props.data;
   console.log(updateData, "update data");
+  const navigate=useNavigate();
 
   var date = new Date();
   var year = date.getFullYear();
+  const [demo , setDemo] = useState([])
 
- 
+  useEffect(()=>{
+    setDemo([1,2,3,3,3,3,3,3,3,3,3])
+  },[])
+  useEffect(() => {console.warn("Props are coming")},[props.data])
+
+
 
     const values = {
       transactionDate: "",
@@ -19,14 +29,25 @@ export const Form = (props) => {
       amount: 0,
       receipt: "",
       notes: "",
-    };
-    
+    }; 
+
+
     
     const [formValues, setformValues] = useState(values);
-  
+   
+    useEffect(() => {
+      if(updateData!=undefined){
+        setformValues(updateData)
+      }
+      },[])
 
 
 
+    useEffect(() => {
+    
+      console.warn("FormVlaues state are working properly")
+    },[formValues])
+    
 
  
  
@@ -41,12 +62,24 @@ export const Form = (props) => {
     receipt: false,
     notes: false,
   };
-
-  //   const [amount, setAmount] = useState(0)
-
-  
+ 
   const [test, setTest] = useState(formError1);
-  const [amount, setAmount] = useState(0);
+
+  useEffect(()=>{
+  
+    console.warn("Formerror state are working properly")
+  },[test])
+
+  const [checkempty,setcheckempty]=useState();
+
+  useEffect(()=>{
+    setcheckempty(formError1)
+  },[])
+
+
+
+
+
 
   const monthYear = [
     "Jan ",
@@ -62,6 +95,7 @@ export const Form = (props) => {
     "Nov ",
     "Dec ",
   ];
+
   const transactionType = ["Home Expense", "Personal Expense", "Income"];
 
   const fromAccount = [
@@ -158,43 +192,71 @@ export const Form = (props) => {
     console.log(test);
   };
 
+
+  const checkFrom=(e)=>{
+    let fromData=e.target.value;
+    let toData=formValues.to;
+    console.log(toData,"in fromData")
+
+    if(toData==""){
+      setformValues((prev) => ({ ...prev, from:fromData }));
+      setTest((prev) => ({ ...prev, from:false }));
+    }
+    else{
+      if(fromData==toData){
+        setTest((prev) => ({ ...prev, to:true }));
+      }
+      else{
+        setTest((prev) => ({ ...prev, to:false }));
+        setformValues((prev) => ({ ...prev, from:fromData }));
+
+      }
+    }
+
+  }
+
   const checkTo = (e) => {
     let result={...formValues}
     let toData = e.target.value;
     let fromData = result.from;
     if (toData == fromData) {
       console.log("if true")
-      setTest((prev) => ({ ...prev, from: true, to: true }));
-      setformValues((prev) => ({ ...prev, from: "", to: "" }));
+      setTest((prev) => ({ ...prev, to: true }));
+      // setformValues((prev) => ({ ...prev, to: "" }));
       console.log(result.from,"before ")
     } else {
       console.log("else true")
 
-      setTest((prev) => ({ ...prev, from: false, to: false }));
-      setformValues((prev) => ({ ...prev, from: fromData, to: toData }));
+      setTest((prev) => ({ ...prev, to: false }));
+     
       console.log(result.from)
 
     }
+
+    setformValues((prev) => ({ ...prev,to: toData }));
   };
 
   const checkAmount = (e) => {
    
     console.log(e.target.value);
     let Amount = e.target.value;
-    var parts = Amount.toString().split(".");
-    const numberPart = parts[0];
-    const decimalPart = parts[1];
+
 
     let amountReg = /[0-9]/;
     if (amountReg.test(Amount)) {
-      const thousands = /\B(?=(\d{3})+(?!\d))/g;
-      let result =
-        numberPart.replace(thousands, ",") +
-        (decimalPart ? "." + decimalPart : "");
-      console.log(result, "regex for ,");
 
-      setformValues((prev) => ({ ...prev, amount: result }));
+      const numberFormat = (value) =>
+      new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+      }).format(value);
+
+      let finalAmount = numberFormat(Amount) 
+      console.log(finalAmount, "final Amount");
+
+      setformValues((prev) => ({ ...prev, amount:finalAmount }));
       setTest((prev) => ({ ...prev, amount: false }));
+
     } else {
       console.log("no error in amount");
       setTest((prev) => ({ ...prev, amount: true }));
@@ -227,12 +289,11 @@ export const Form = (props) => {
 
 useEffect(()=>{
   if(updateData!=undefined){
-    // const preview = document.querySelector("img");
+    
     imgSrc=updateData.receipt;
-    console.log(imgSrc,"imnage")
 
     let imagId=document.getElementById("imagefile");
-    console.log(imagId,"image")
+    
     imagId.style.visibility='hidden'
      
   }   
@@ -312,6 +373,7 @@ useEffect(()=>{
           result.push(formValues);
           result[0]["id"] = 1;
           localStorage.setItem("Formnew", JSON.stringify(result));
+          navigate('/show-table')
         } else {
           let getdata = localStorage.getItem("Formnew");
           let resultData = JSON.parse(getdata);
@@ -330,6 +392,8 @@ useEffect(()=>{
             // combineddata.push(getdata)
   
             localStorage.setItem("Formnew", JSON.stringify(resultData));
+            navigate('/show-table')
+
 
           }
           else{  
@@ -359,8 +423,13 @@ useEffect(()=>{
       } else {
         console.log(formValues);
         console.log(test);
-        alert(" Some fields are missing ");
-        e.preventDefault();
+        const emptyState={...test};
+        console.log(emptyState)
+       for(let i in emptyState){
+        emptyState[i]=true
+       }
+        setTest(emptyState)
+      
       }
     } else {
       alert("Please Enter valid fields data");
@@ -392,6 +461,8 @@ useEffect(()=>{
                 ? "Please Enter valid transaction Date"
                 : ""}
             </div>
+            
+
           </div>
 
           <div className="mb-3">
@@ -450,9 +521,9 @@ useEffect(()=>{
               defaultValue={updateData == undefined ? "" : updateData.from}
               className="form-select"
               aria-label="Default select example"
-              onChange={(e) => {
-                setformValues((prev) => ({ ...prev, from: e.target.value }));
-              }}
+              onChange={(e) => {checkFrom(e)}}
+                
+              
             >
               <option>From Account</option>
               {fromAccount.map((item) => (

@@ -1,0 +1,19 @@
+
+
+  
+  .zoom {
+    bottom: 190px;
+  }
+  
+  .zoom-out {
+    bottom: 120px;
+  }
+  .zoom-init {
+    bottom: 50px;
+  }
+
+  .viewTr{
+
+    border: 2px solid rgb(124, 99, 99);
+    
+  }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "./components/Datatable";
 import { Link } from "react-router-dom";
 import "../../pages/showTable/css/showTable.css";
+import {Logout} from '../../pages/logout/component/Logout'
 
 export const ShowTable = () => {
   var groupdata1;
@@ -14,6 +15,8 @@ export const ShowTable = () => {
 
   const [Groupby, setGroupby] = useState();
   const [Grp, setGrp] = useState(true);
+
+
 
   // const [isSortClick,setIsSortClick]=useState(0);
 
@@ -342,8 +345,31 @@ export const ShowTable = () => {
 
   // --------------------------Pagination-------------------------------------------
 
+  console.log(Groupby,"grouphsdfihdhf =---------------------")
   return (
+<>
+<div className="logout">
+<Logout/>
+
+</div>
+
     <div className="container">
+    <div className="sub-container1">
+        <select
+          className="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          onChange={group}
+        >
+          <option>Select Fields for Group By</option>
+          {Object.keys(data[0]).map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+
+
       <div className="sub-container">
         {Grp ? (
           data.length == 0 ? (
@@ -375,28 +401,20 @@ export const ShowTable = () => {
             </div>
           )
         ) : (
-          Object.values(Groupby).map((item, index) => (
+          Object.keys(Groupby).map((item, index) => (
+            <>
+            {console.log(Groupby[item],'item-----------------fcgvfvbgfdgbdfgh-------------------')},
             <div className="container1">
-              <DataTable data={item} />
+              <DataTable data={Groupby[item]} />
             </div>
+            </>
           ))
         )}
       </div>
-      +
-      <div className="sub-container">
-        <select
-          className="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-          onChange={group}
-        >
-          <option>Select Fields for Group By</option>
-          {Object.keys(data[0]).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-      </div>
+      
+     
     </div>
+
+    </>
   );
 };
