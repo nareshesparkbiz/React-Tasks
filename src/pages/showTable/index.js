@@ -3,6 +3,7 @@ import { DataTable } from "./components/Datatable";
 import { Link } from "react-router-dom";
 import "../../pages/showTable/css/showTable.css";
 import {Logout} from '../../pages/logout/component/Logout'
+import {Navbar} from '../../pages/navbar/components/Navbar'
 
 export const ShowTable = () => {
   var groupdata1;
@@ -10,12 +11,15 @@ export const ShowTable = () => {
   const result1 = localStorage.getItem("Formnew");
 
   const tabledata1 = JSON.parse(result1);
+  console.log(tabledata1,"data are coming");
+
   var flag = 0;
   const [data, setdata] = useState(tabledata1);
 
   const [Groupby, setGroupby] = useState();
   const [Grp, setGrp] = useState(true);
 
+  
 
 
   // const [isSortClick,setIsSortClick]=useState(0);
@@ -348,6 +352,8 @@ export const ShowTable = () => {
   console.log(Groupby,"grouphsdfihdhf =---------------------")
   return (
 <>
+<Navbar/>
+
 <div className="logout">
 <Logout/>
 

@@ -18,6 +18,7 @@ console.log(checklogin,"check login")
 
     return (
         
+      
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <a className="navbar-brand" >Finance Tracker</a>

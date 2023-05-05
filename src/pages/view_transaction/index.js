@@ -4,10 +4,29 @@ import { useLocation, useParams } from "react-router-dom";
 import './css/index.css'
  export const View=()=>{
  const location=useLocation();
- const data=location.state;
+//  const data=location.state;
 
-
+ const [currentuser,setcurrentUser]=useState("");
+ const {id}=useParams();
 useEffect(()=>{
+console.log(id,"[][][][][]")
+    const localData=localStorage.getItem('Formnew');
+    const userData=JSON.parse(localData)
+    console.warn(userData,"======================")
+
+    for(let i in userData){
+        if(id==userData[i].id){
+            console.log("sadasdasd")
+
+            setcurrentUser(userData[i])
+        }
+    }
+
+
+
+
+
+
     var zoom = 1;
 		
     document.querySelector('.zoom').addEventListener('onclick', ()=>{
@@ -23,22 +42,12 @@ useEffect(()=>{
         zoom-=0.1;
         document.getElementsByClassName('.target').style.transform='scale('+zoom+')';
     });
-    // $('.zoom').on('click', function(){
-    //     zoom += 0.1;
-    //     $('.target').css('transform', 'scale(' + zoom + ')');
-    // });
-    // $('.zoom-init').on('click', function(){
-    //     zoom = 1;
-    //     $('.target').css('transform', 'scale(' + zoom + ')');
-    // });
-    // $('.zoom-out').on('click', function(){
-    //     zoom -= 0.1;
-    //     $('.target').css('transform', 'scale(' + zoom + ')');
-    // });
+   
 },[])
  
 
- const {id}=useParams();
+console.log(currentuser,"--------------------------------------current user--------------------------------")
+
 
 
 const [zoomin,setzoomin]=useState({
@@ -120,36 +129,36 @@ document.querySelector('.zoom-out').style. visibility='hidden';
                 <tbody>
                     <tr className="viewTr">
                         <th>Transaction ID</th>
-                        <td>{data.id}</td>
+                        <td>{currentuser.id}</td>
                     </tr>
                     <tr className="viewTr">
                     <th>Transaction Date:</th>
-                    <td>{data.transactionDate}</td>
+                    <td>{currentuser.transactionDate}</td>
                     </tr>
                     <tr className="viewTr">             
                     <th>Transaction Type:</th>
-                    <td>{data.transactionType}</td>
+                    <td>{currentuser.transactionType}</td>
                     </tr>
                     <tr className="viewTr">             
                     <th>Month Year:</th>
-                    <td>{data.monthYear}</td>
+                    <td>{currentuser.monthYear}</td>
                     </tr >
                     <tr className="viewTr">             
                     <th>From Account:</th>
-                    <td>{data.from}</td>
+                    <td>{currentuser.from}</td>
                     </tr>
                     <tr className="viewTr">             
                     <th>To Account:</th>
-                    <td>{data.to}</td>
+                    <td>{currentuser.to}</td>
                     </tr>
                     <tr className="viewTr">             
                     <th>Amount:</th>
-                    <td>{data.amount}</td>
+                    <td>{currentuser.amount}</td>
                     </tr>
                     <tr className="viewTr">
                         <th>Receipt:</th>
                         
-                        <td ><img src={data.receipt} alt="receipt" className="imageTag box target"  height={100} width={100} /></td>
+                        <td ><img src={currentuser.receipt} alt="receipt" className="imageTag box target"  height={100} width={100} /></td>
                     </tr>
                    
 

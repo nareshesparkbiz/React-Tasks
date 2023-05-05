@@ -241,23 +241,23 @@ export const Form = (props) => {
     console.log(e.target.value);
     let Amount = e.target.value;
 
+    let originalAmount=Number(Amount);
+
+
 
     let amountReg = /[0-9]/;
-    if (amountReg.test(Amount)) {
 
-      const numberFormat = (value) =>
-      new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR'
-      }).format(value);
+    if(!isNaN(Amount)){
+      if (amountReg.test(Amount)) {
 
-      let finalAmount = numberFormat(Amount) 
-      console.log(finalAmount, "final Amount");
+        setformValues((prev) => ({ ...prev, amount:Amount }));
+        setTest((prev) => ({ ...prev, amount: false }));
+  
+      }
 
-      setformValues((prev) => ({ ...prev, amount:finalAmount }));
-      setTest((prev) => ({ ...prev, amount: false }));
-
-    } else {
+      console.log("true")
+  }
+     else {
       console.log("no error in amount");
       setTest((prev) => ({ ...prev, amount: true }));
       setformValues((prev) => ({ ...prev, amount: "" }));
@@ -345,6 +345,7 @@ useEffect(()=>{
  
 
   const formhandler = (e) => {
+    
     if (
       test.transactionDate == false &&
       test.monthYear == false &&
@@ -368,6 +369,7 @@ useEffect(()=>{
         let localdata = localStorage.getItem("Formnew");
 
         if (localdata == null) {
+          
           // To store data
           let result = [];
           result.push(formValues);
@@ -375,11 +377,12 @@ useEffect(()=>{
           localStorage.setItem("Formnew", JSON.stringify(result));
           navigate('/show-table')
         } else {
+        
           let getdata = localStorage.getItem("Formnew");
           let resultData = JSON.parse(getdata);
           
           if(updateData==undefined){
-           
+            
 
             let previd = resultData.at(resultData.length-1).id;
   
@@ -389,14 +392,24 @@ useEffect(()=>{
   
             resultData.push(newdata);
             // resultData
-            // combineddata.push(getdata)
-  
-            localStorage.setItem("Formnew", JSON.stringify(resultData));
+            // combineddata.push(getdata)  
+          
+            
+            try{
+              localStorage.setItem("Formnew", JSON.stringify(resultData));
+
+            }
+            catch(exception ){
+              alert("Sorry Storage was full no more data entry are not allowed")
+            }
+          
+        
             navigate('/show-table')
 
 
           }
-          else{  
+          else{
+           
             console.log(resultData[0].id,"dddddd")
             let updateId=updateData.id;
           console.log(updateId,"update data id")
@@ -413,7 +426,8 @@ useEffect(()=>{
         console.log(resultData,"update data")
 
         localStorage.setItem("Formnew", JSON.stringify(resultData));
-            
+        alert("Update Data SuccessFully")
+            navigate('/show-table')
           }
 
         
@@ -421,6 +435,7 @@ useEffect(()=>{
           e.preventDefault();
         }
       } else {
+      
         console.log(formValues);
         console.log(test);
         const emptyState={...test};
@@ -435,6 +450,7 @@ useEffect(()=>{
       alert("Please Enter valid fields data");
       e.preventDefault();
     }
+    e.preventDefault();
   };
 
   return (

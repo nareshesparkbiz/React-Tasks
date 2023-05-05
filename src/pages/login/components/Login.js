@@ -135,7 +135,13 @@ export const Login = () => {
 
           return <Link to="/" />;
       } else {
-        alert("Some Fileds are Missing");
+        const emptyState={...formerror};
+        console.log(emptyState)
+       for(let i in emptyState){
+        emptyState[i]=true
+       }
+       setformerror(emptyState)
+  
       }
     } else {
       alert("Please Enter Valid Details");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {Navbar} from '../../navbar/components/Navbar';
 
 
 export const Register=()=>{
@@ -9,6 +10,7 @@ export const Register=()=>{
         name:"",
         email:"",
         password:"",
+        repassword:"",
         login:false,
         status:false
     })
@@ -20,6 +22,15 @@ export const Register=()=>{
         repassword:false,
     })
 
+
+    useEffect(()=>{
+console.warn("form data")
+    },[formValue])
+
+
+    useEffect(()=>{
+      console.warn("form data error")
+          },[formerror])
 const nameHandler=(e)=>{
 let data={...formValue}
 let error={...formerror}
@@ -80,20 +91,32 @@ const passwordHandler=(e)=>{
     let error={...formerror}
 
     if(password.length<8 ){
+     
         console.log("Password")
         data.password="";
         error.password=true;
+        console.log(formerror,"=====================dfsfsd")
 
         setformValue(data);
-        setformerror(error)  
+        setformerror(error) 
+      
+        
+    }
+    else{ if(data.password!=data.repassword){
+      error.repassword=true;
+
+  
+      setformerror(error)  
     }
     else{
-        data.password=password;
-        error.password=false;
+      data.password=password;
+      error.password=false;
 
-        setformValue(data);
-        console.log(formValue)
-        setformerror(error)  
+      setformValue(data);
+      console.log(formValue)
+      setformerror(error)  
+    }
+       
     }
 
 
@@ -107,11 +130,13 @@ const RepasswordHandler=(e)=>{
     let error={...formerror}
 
     if(repassword==data.password){
-        
-        error.repassword=true;
-
-    
+      error.repassword=false;
+      data.repassword=repassword;
+      setformValue(data);
+  
+      console.log(formValue,"reapss")
         setformerror(error)  
+         
     }
     else if( repassword.length<8 ){
         error.repassword=true;
@@ -120,12 +145,14 @@ const RepasswordHandler=(e)=>{
         setformerror(error)  
     }
     else{
+
+
+      error.repassword=true;
+
+    
+        setformerror(error) 
        
-        error.repassword=false;
-      
-  
-      console.log(formValue,"reapss")
-        setformerror(error)  
+       
 
     }
 }
@@ -149,6 +176,7 @@ const formhandler=(e)=>{
               result[0]["id"] = 1;
               console.log(result,"initial data");
               localStorage.setItem("user-data", JSON.stringify(result));
+              navigate("/login")
             } else {
               let getdata = localStorage.getItem("user-data");
               let resultData = JSON.parse(getdata);
@@ -164,6 +192,7 @@ const formhandler=(e)=>{
                 // combineddata.push(getdata)
               console.log(resultData,"combined Data")
                 localStorage.setItem("user-data", JSON.stringify(resultData));
+                navigate("/login")
     
               }
         }
@@ -172,13 +201,25 @@ const formhandler=(e)=>{
         }
     }
     else{
-        alert("Some Fields Are Missing")
+      const emptyState={...formerror};
+      console.log(emptyState)
+     for(let i in emptyState){
+      emptyState[i]=true
+     }
+     setformerror(emptyState)
+
+  
     }
+    e.preventDefault()
  
 }
 
 
   return (
+    <>
+   
+    <Navbar/>
+    
     <div className="container">
 
    
@@ -261,6 +302,7 @@ const formhandler=(e)=>{
     </div>
   </section>
   </div>
+  </>
   );
 }
 

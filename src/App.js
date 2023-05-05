@@ -11,12 +11,28 @@ import {RegisterMain} from './pages/registration';
 import {LoginMain} from './pages/login';
 import {Protected} from './pages/authentication/components/Protected';
 
+
+// const FinalRoute=()=>{
+// <BrowserRouter>
+
+
+
+// </BrowserRouter>
+
+
+// }
+
+
+
+
+
+
 function App() {
   return (
   <>
   
     <BrowserRouter>
-    <Navbar/>
+    
     <Routes>
 
     <Route path="/register" element={<RegisterMain/>}/>

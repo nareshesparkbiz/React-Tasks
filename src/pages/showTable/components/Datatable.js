@@ -3,34 +3,26 @@ import { View } from "./../../view_transaction";
 import { Link } from "react-router-dom";
 import '.././css/showTable.css'
 
-export const DataTable = ({data}) => {
-  console.log({data})
+export const DataTable = (props) => {
 
 
- const[data123,setdata123]=useState(data)
- console.log(data123,"setdata1")
-
-  const [originalData,setOriginalData]=useState(data);
-  // setOriginalData(result)
-  console.log({ originalData })
-  useEffect(()=> {
-    console.log('result called');
-
+  const originalData=props.data;
   
-  },[originalData])
-  
-
-  // console.log(typeof(result),"dfgfdgdfgdfgdfg")
-
-
-// console.log(data,"data hai")
-// console.log(result,"result data hai")
-
  
-  // console.log(originalData,"set original data hai")
+  
+
 
   const [isSortClick, setIsSortClick] = useState(0);
-  const [searched,setsearched]=useState(originalData)
+  const [searched,setsearched]=useState([])
+  const [showData,setshowData]=useState([]);
+
+
+
+
+  useEffect(()=>{
+    let a = [...props.data]
+    setsearched(a)
+  },[])
   
 
   // const [dataLength, setdataLength] = useState(totalData);
@@ -39,27 +31,63 @@ export const DataTable = ({data}) => {
 
   const [cuurentSortElement, setCuurentSortElement] = useState();
 
-
-
-
-  const [table1, settable1] = useState([]);
-  
-  // console.log(table1,"table1 data")
+  const [sliceData,setslice]=useState([])
 
   useEffect(()=>{
-   
-    let sliceData= searched.slice(0, perPage);
-    // console.log(sliceData, "data1");
-    settable1(sliceData)
-  },[searched,data])
+    // document.getElementById("page1").backgroundColor =""
+    let data = [...searched]
+  let sliceData1= data.slice(0, perPage);
 
- 
+  setslice(sliceData1);
+
+  },[searched])
+
+  useEffect(()=>{
+    settable1(sliceData)
+  },[sliceData])
+
+
+
+
+  
+  const [table1, settable1] = useState(sliceData);
+
+
+//   useEffect(()=>{
+//     const sampleData=[...originalData];
+// let descArray =[];
+//     for(let i=sampleData.length-1;i>=0;i--){
+//       console.log(sampleData[i],"sample data at index     ====================");
+//       descArray.push(sampleData[i]);
+//     }
+//     console.log(descArray,"sdasdasssssssssssssssssssssssssssss==========================");
+
+//     settable1(descArray);
+    
+//     },[])
+  
+  
+  
+  
+
+  
+  console.log(table1,"table1")
+
+
+  useEffect(()=> {
+    console.log('result called');
+
+  
+  },[originalData])
 
   var totalData = searched.length;
 
   // -------------------Pagination----------------
 
   const pagehandler = (item) => {   
+
+// document.getElementById(item+1).style.backgroundColor ="green"
+
     // console.log(item, "item selected");
     let tableData = [...searched];
     const offset = item * perPage;
@@ -92,8 +120,8 @@ export const DataTable = ({data}) => {
           return x - y;
         }
         if (key == "amount") {
-          x = Number(x.replaceAll(",", ""));
-          y = Number(y.replaceAll(",", ""));
+          x = Number(x);
+          y = Number(y);
           return x < y ? -1 : x > y ? 1 : 0;
         }
         return x < y ? -1 : x > y ? 1 : 0;
@@ -105,8 +133,8 @@ export const DataTable = ({data}) => {
           return y - x;
         }
         if (key == "amount") {
-          x = Number(x.replaceAll(",", ""));
-          y = Number(y.replaceAll(",", ""));
+          x = Number(x);
+          y = Number(y);
           return x > y ? -1 : x < y ? 1 : 0;
         }
         return x > y ? -1 : x < y ? 1 : 0;
@@ -115,9 +143,15 @@ export const DataTable = ({data}) => {
   };
 
   const convertSort = (listData, elementName) => {
+
+    let sort = [...listData];
+
+
     if (isSortClick === 0 || elementName !== cuurentSortElement) {
       // console.log("ASC - ", elementName);
-      const shortedArray = dataSort(listData, elementName, "asc");
+      const shortedArray = dataSort(sort, elementName, "asc");
+      console.log(shortedArray,"Asc Array")
+
       setsearched(shortedArray);
 
       document.querySelector('#'+elementName).innerHTML="↑"
@@ -128,7 +162,7 @@ export const DataTable = ({data}) => {
     }
     if (isSortClick === 1 && elementName === cuurentSortElement) {
       // console.log("DESC - ", elementName);
-      const shortedArray = dataSort(listData, elementName);
+      const shortedArray = dataSort(sort, elementName);
       setsearched(shortedArray);
       // console.log(table1,"Descending sort")
       document.querySelector('#'+elementName).innerHTML="↓"
@@ -137,14 +171,28 @@ export const DataTable = ({data}) => {
     }
     if (isSortClick === 2 && elementName === cuurentSortElement) {
       // console.log("INIT - ", elementName);
-      setsearched(data);
+      setsearched(props.data);
       // console.log(table1,"Without sort")
       document.querySelector('#'+elementName).innerHTML=""
       setIsSortClick(0);
     }
     
   };
+// ----------------------------amount formatter------------------------------------
 
+function amountFormatter(amount){
+
+   const numberFormat = (value) =>
+      new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+      }).format(value);
+
+      let finalAmount = numberFormat(amount) 
+      console.log(finalAmount, "final Amount");
+      return finalAmount;
+     
+}
 
 
   // ----------------------------------------searching------------------------------
@@ -247,7 +295,7 @@ setsearched(filteredPersons)
               <td>{element.transactionType}</td>
               <td>{element.from}</td>
               <td>{element.to}</td>
-              <td>{element.amount}</td>
+              <td>{amountFormatter(element.amount)}</td>
               <td><img src={element.receipt} style={{height:'50px',width:'50px'}} alt="" /></td>
               <td>{element.notes}</td>
               <td>
@@ -271,7 +319,7 @@ setsearched(filteredPersons)
 
       <div className="pageno">
         {pageno.map((item) => (
-          <button    key={item} className="btn btn-primary page"  onClick={(e) => {
+          <button    key={item} className="btn btn-primary page " id={item} onClick={(e) => {
             pagehandler(item - 1);
           }} > Page {item}</button>
          

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {Form} from '../add_transaction/components/Form';
+import {Navbar} from '../../pages/navbar/components/Navbar'
 
 export const UpdateTransaction=()=>{
  const location=useLocation();
@@ -11,7 +12,11 @@ export const UpdateTransaction=()=>{
 
  
     return(
-        <Form data={editData}/>
+        <>
+        <Navbar/>
+           <Form data={editData}/>
+        </>
+     
     )
    
  
