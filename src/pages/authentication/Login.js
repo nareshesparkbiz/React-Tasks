@@ -4,13 +4,16 @@ import { useForm } from "react-hook-form";
 import { Link,useNavigate } from 'react-router-dom';
 import * as yup from "yup";
 
-import {tokenGenerator,saveToCookie} from '../../utils/helper'
+import {tokenGenerator,saveToCookie,notify,alertnotify} from '../../utils/helper'
 
 
 import {Navbar} from '../navbar/Navbar'
 import {addToken} from "../../redux/stores/slices/authUserSlice";
   import { useDispatch } from "react-redux";
   import { useSelector } from "react-redux";
+  import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FormField from '../../components/FormFiels'
 // import '../Styles/login.css'
 
 export const Login = () => {
@@ -52,25 +55,7 @@ export const Login = () => {
     resolver: yupResolver(loginSchema), mode: "all"
   });
 
-  const FieldGenerator = (value, type) => {
-    return (
-      <div className="d-flex flex-row align-items-center mb-4">
-      <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-      <div className="form-outline flex-fill mb-0">
-        <label className="form-label" htmlFor={value}>Enter {value}</label>
-        <input
-          name={value}
-          {...register(`${value}`)}
-          type={type}
-          className="form-control"
-          placeholder={value}
-        />
-           <div i className="form-text text-danger"> {errors[value]?.message}</div>
-      </div>
-      </div>
-                        
-    );
-  };
+
 
   const loginHandler = (data) => {
     // console.log("login succesfully");
@@ -110,13 +95,13 @@ export const Login = () => {
 
            dispatch(addToken(newRegisterData))
            if(flag==0){
-            alert("Incorrect Email or password")
+            alertnotify('Invalid Credentials')
            }
            else{
 
-               alert("Login succesfully")
+               notify('🦄 Login SuccesFully ')
                saveToCookie('authToken',tokenData)
-               navigate("/all-transaction/view-transaction")
+             setTimeout(()=>{navigate("/all-transaction/view-transaction")},2000)  
                
            }
            
@@ -147,19 +132,16 @@ export const Login = () => {
                       </p>
 
         <form  className="mx-1 mx-md-4"  onSubmit={handleSubmit(loginHandler)}>
-          {FieldGenerator("email", "email")}
+       
+        
+           {FormField("email","email","Enter Email",[register,errors],"Email")}
+           {FormField("password","password","Enter Password",[register,errors],"Password")}
 
-          {FieldGenerator("password", "password")}
+      
 
           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button
-                            type="submit"
-                            className="btn btn-primary btn-lg"
-                            {...register("submit")}
-                          
-                          >
-                            Login
-                          </button>
+                         {FormField("submit","button","Login",[register,errors],"Login")}
+                        
                         </div>
                         
                         <div className="text-center">
@@ -183,6 +165,18 @@ export const Login = () => {
             </div>
           </div>
         </div>
+        <div className="toast-container">  <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      /></div>
       </section>
     </div>
     </>

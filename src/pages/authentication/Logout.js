@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import '../../assets/styles/Logout.css'
 import { useSelector,useDispatch } from "react-redux";
 import {removeToken } from '../../redux/stores/slices/authUserSlice'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {notify} from '../../utils/helper'
 
 export const Logout = () => {
 
@@ -39,9 +42,10 @@ const dispatch=useDispatch()             //Dispatcher
         }
         // console.log(latestUser,"logout data")
         dispatch(removeToken(latestUser))
-        alert("Logout Succesfully")
+        notify("Logout Successfully")
         
-        navigate("/login");
+        
+       setTimeout(()=>{navigate("/login");},2000) 
     }
     
   };
@@ -51,6 +55,18 @@ const dispatch=useDispatch()             //Dispatcher
       
 
 <button className="button-5" role="button" onClick={logoutHandler}>Logout</button>
+<div className="toast-container">  <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      /></div>
     </div>
   );
 };

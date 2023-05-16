@@ -4,19 +4,10 @@ import Register from './pages/authentication/Register'
 import { AddTransaction } from './pages/transactions/requests/TransactionForm';
 import { ShowTable } from './pages/transactions/requests/Transactions';
 import { ShowTransaction } from './pages/transactions/requests/TransactionDetails'
+import {User} from './components/User'
 
 
 export const  PublicRoutes=()=>{
-
-
-
-     
-
-
-
-
-        
-      
 
 
     const FinalRoute=(props)=>{
@@ -58,10 +49,11 @@ export const  PublicRoutes=()=>{
   
 
         createRoutesFromElements(
+           
             <Route path="/">
-               
                <Route path="register" element={<FinalRoute  isPublic cmp={<Register/>}/>}/>
             <Route path="login" element={<FinalRoute isPublic  cmp={<Login/>}/>}/>
+          
           
 
 

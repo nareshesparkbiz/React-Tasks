@@ -1,6 +1,7 @@
 
 
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -56,5 +57,55 @@ export function amountFormatter(amount){
   export const saveToCookie = (COOKIE_NAME,data) => {
     document.cookie = `${COOKIE_NAME}=${JSON.stringify(data)}`
   }
-
   
+  export const notify = (props) => {
+    console.log('props::: ', props);
+    toast.success(props, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      
+      });
+     
+  };
+  
+
+ export  const alertnotify=(props)=>{
+  console.log('props::: ', props);
+
+    toast.error(props, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+  }
+
+
+  export const toastPack=()=>{
+    return(
+      <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      />
+    )
+    
+    
+  }

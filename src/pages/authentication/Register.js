@@ -10,6 +10,11 @@ import {addUser} from "../../redux/stores/slices/authUserSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { registerSchema } from "../../utils/validation";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {notify,alertnotify} from '../../utils/helper'
+import FormField from '../../components/FormFiels'
+
 
 
 
@@ -20,7 +25,7 @@ const userRegisterData = useSelector((state) => {    // use of Selector
     return state.authUser;
   });
 
-
+ 
 
 const dispatch=useDispatch()  // dispatch
 
@@ -43,9 +48,10 @@ const dispatch=useDispatch()  // dispatch
     if(userRegisterData.length>0){
        let checkUser= userRegisterData.filter((user)=>user.user.email===data.email)
         if(checkUser.length>0){
-            alert("Email already registered")
+           
+            alertnotify('Email already registered')
           
-            reset()
+            
         }
         else{
             let previd = userRegisterData.at(userRegisterData.length-1).id;
@@ -53,8 +59,12 @@ const dispatch=useDispatch()  // dispatch
             userData['id']=previd+1;
             userData['user']=data
             userData['token']=""
+            notify("🦄 Register SuccesFully ")
             dispatch(addUser(userData))
-            alert("Register Succesfully!")
+            // navigate("/login")
+            setTimeout(()=>{
+              navigate("/login")
+            },3000)
            
 
 
@@ -64,47 +74,26 @@ const dispatch=useDispatch()  // dispatch
 
     }
     else{
+      
         userData['id']=1
         userData['user']=data
         userData['token']=""
+        
+        notify('🦄 Register SuccesFully ')
         dispatch(addUser(userData))
-        alert("Register Succesfully!")
+        // navigate("/login")
+        setTimeout(()=>{
+          navigate("/login")
+        },3000)
+      
         
         
     }
-    navigate("/login")
+ 
     reset()
 
 
   };
-
-  //Form Field Generator
-  const FieldGenerator = (value, type) => {
-    return (
-
-
-       <div className="d-flex flex-row align-items-center mb-4">
-                      <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                      <div className="form-outline flex-fill mb-0">
-
-        <label htmlFor={value} className="form-label">Enter {value}</label>
-        <input
-          name={value}
-          {...register(`${value}`)}
-          type={type}
-          className="form-control" 
-          placeholder={value}
-        />
-            <div i className="form-text text-danger"> {errors[value]?.message}</div>
-     
-      </div>
-      </div>
-                   
-                   
- 
-    );
-  };
-
 
 
   return (
@@ -127,16 +116,18 @@ const dispatch=useDispatch()  // dispatch
 
         
         <form  className="mx-1 mx-md-4" onSubmit={handleSubmit((e) => formSubmit(e))}>
-          {FieldGenerator("name", "text")}
+      
+          {FormField("name","text","Enter name",[register,errors],"Name")}
+          {FormField("email","email","Enter Email",[register,errors],"Email")}
+          {FormField("password","password","Enter Password",[register,errors],"Password")}
+          {FormField("respassword","password","Confirm Password",[register,errors],"Confirm password")}
 
-          {FieldGenerator("email", "email")}
 
-          {FieldGenerator("password", "password")}
-
-          {FieldGenerator("respassword", "password")}
 
           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" className="btn btn-primary btn-lg">Register</button>
+                    
+          {FormField("submit","button","Register",[register,errors])}
+
                     </div>
 
         
@@ -149,12 +140,26 @@ const dispatch=useDispatch()  // dispatch
     
                   </div>
                 </div>
+                <div className="toast-container">  <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      /></div>
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+  
     </div>
     </>
     

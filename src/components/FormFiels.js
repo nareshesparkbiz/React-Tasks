@@ -4,19 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 
 
-const FormField=(props)=>{
-  const {name,type,options,label,extra,error,mymethod,placeholder}=props;
-
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-    
-    reset,
-  } = useForm({ resolver: yupResolver(schema), mode: "all" });
-
-
+const FormField=(name,type,label,schemaName,placeholder,options,extra,mymethod)=>{
+  
+  console.log('registerSchema::: ', schemaName);
+const [register,errors]=schemaName
+ 
+  console.log('errors::: ',register,errors);
 
   
 
@@ -28,10 +21,11 @@ const FormField=(props)=>{
                   {label}
                 </label>
                 <select
-                    extra
+                    
                 
                   className="form-select"
-                onChange={(e)=>{mymethod(e)}}
+                  {...register(name, { required: true })}
+              
     
                   aria-label="Default select example"
                 >
@@ -40,7 +34,7 @@ const FormField=(props)=>{
                   {options.map((item, index) => (
                     <option key={item} value={index}>
                       {item}
-                      {extra.year}
+                      {extra}
                     </option>
                   ))}
                 </select>
@@ -50,17 +44,17 @@ const FormField=(props)=>{
                 </div>
               </div>
             )
-        case 'date':
+        case 'Date':
             return(
                 <div className="mb-3">
                 <label  className="form-label" htmlFor={name}  >{label}</label>
                 <input
                   name={name}
-                  {...register(`${name}`)}
+                  {...register(name, { required: true })}
                   className="form-control"
                   type="date"
                   placeholder={name}
-                  onChange={(e)=>{mymethod(e)}}
+                  onChange={e=>{mymethod(e)}}
                 />
                   <div className="form-text  text-danger ">  {errors[name]?.message}</div>
               
@@ -113,9 +107,9 @@ const FormField=(props)=>{
                 </label>
                 <div className="form-floating">
                   <textarea
-                  onChange={(e)=>{mymethod(e)}}
+                  onChange={e=>{mymethod(e)}}
                     className="form-control"
-                    {...register(`${name}`)}
+                    {...register(name, { required: true })}
               
                     placeholder={placeholder}
                     id="floatingTextarea"
@@ -131,26 +125,33 @@ const FormField=(props)=>{
         case "button":
             return(
               <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <button type={name} className="btn btn-primary btn-lg"    {...register(`${name}`)}>{label}</button>
+              <button type={name} className="btn btn-primary btn-lg"  {...register(name, { required: true })}>{label}</button>
             </div>
 
             )
 
        default: return (
-          <div className="fields">
-            <label htmlFor={name}> {label}</label>
+        
+       <div className="d-flex flex-row align-items-center mb-4">
+       <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+       <div className="form-outline flex-fill mb-0">
+            <label htmlFor={name} className="form-label"> {label}</label>
             <input
               name={name}
-             extra
+              className="form-control" 
+              {...register(name, { required: true })}
               type={type}
-               onChange={(e)=>{mymethod(e)}}
+              
               placeholder={placeholder}
             />
             <div i className="form-text text-danger">
                
-                {errors}
+    
+            {errors[name]?.message}
                 </div>
           </div>
+          </div>
+      
         );
     }
 

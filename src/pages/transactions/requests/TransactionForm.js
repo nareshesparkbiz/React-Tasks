@@ -1,5 +1,5 @@
 
-import React, { useEffect,useContext ,useState} from "react";
+import React, { useEffect,useState} from "react";
 import { useForm } from "react-hook-form";
 import {useParams, useNavigate} from "react-router-dom"
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,10 +11,15 @@ import  {addTransaction,removeTransaction,editTransaction,viewTransaction} from 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {Navbar} from '../../navbar/Navbar'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {notify} from '../../../utils/helper'
+import FormField from '../../../components/FormFiels'
+
+
 
 
 export const AddTransaction = () => {
-  
   const {id}=useParams();  // Params
   // console.log(id,"id in edit form")
   const navigate=useNavigate();   //Navigation
@@ -61,7 +66,7 @@ const dispatch=useDispatch()   // dispatch
     }  
 
      
-   
+  
   
     },[id])
 
@@ -83,64 +88,6 @@ const dispatch=useDispatch()   // dispatch
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(transactionFormSchema), mode: "all"});
-
-
-
-
-
-
-  const FieldGenerator = (value, type,constants) => {
-    const data1 = { value };
-
-    console.log(data1, "data");
-    console.log(typeof data1, "data");
-
-    switch (type) {
-      case "select":
-        return (
-          <div className="mb-3">
-            <label htmlFor={value} className="form-label">
-              {value}
-            </label>
-            <select
-              {...register(`${value}`)}
-              // defaultValue={updateData == undefined ? "" : updateData.monthYear}
-              className="form-select"
-              // onChange={MonthYear}
-
-              aria-label="Default select example"
-            >
-              <option value={""}>Select {value}</option>
-
-              {constants.map((item, index) => (
-                <option key={item} value={index}>
-                  {item}
-                  {year}
-                </option>
-              ))}
-            </select>
-            <div className="form-text  text-danger ">
-              {/* {test.monthYear ? "Please Enter valid Month Year" : ""} */}
-              {errors[value]?.message}
-            </div>
-          </div>
-        );
-      
-      default:
-        return (
-          <div className="fields">
-            <label htmlFor={value}>Enter {value}</label>
-            <input
-              name={value}
-              {...register(`${value}`)}
-              type={type}
-              placeholder={value}
-            />
-            {errors[value]?.message}
-          </div>
-        );
-    }
-  };
 
 
 
@@ -175,13 +122,16 @@ const dispatch=useDispatch()   // dispatch
             data['id']=previd+1;
         
             dispatch(addTransaction(data))
-            alert("Transaction Add Successful");
+            notify("Transaction Add Succefully")
+            // alert("Transaction Add Successful");
 
         }
         else{
             dispatch(editTransaction(data))
-            alert("Transaction Update Successfully");
-            navigate('/all-transaction/view-transaction')
+            notify("Transaction Update Succefully")
+
+            // alert("Transaction Update Successfully");
+            // navigate('/all-transaction/view-transaction')
 
         }
          
@@ -197,13 +147,14 @@ const dispatch=useDispatch()   // dispatch
      else{
          data['id']=1 
          dispatch(addTransaction(data))
-         alert("Transaction Add Successful");
-         
-         
+         notify("Transaction Add Succefully")
+
+        //  alert("Transaction Add Successful");
+        
      }
      reset()
-  navigate('/all-transaction/view-transaction')
-  };
+ setTimeout(()=>{navigate('/all-transaction/view-transaction')
+},2000)   };
 
   return (
 
@@ -214,134 +165,18 @@ const dispatch=useDispatch()   // dispatch
         {id == undefined ? "" : <h1>Edit Form</h1>}
         <h2 className="header-h2">Finance Tracker</h2>
         <form onSubmit={handleSubmit(formhandler)}>
-          <div className="mb-3">
-            <label htmlFor="transDate" className="form-label">
-              Transaction Date
-            </label>
-            <input
-              type="Date"
-              {...register("transactionDate")}
-              // defaultValue={
-              //   updateData == undefined ? "" : updateData.transactionDate
-              // }
-              className="form-control"
-              // onChange={checkTransactionDate}
-            />
-
+           {FormField("transactionDate","Date","Transaction Date",[register,errors])}
           
+      
 
-            <div className="form-text  text-danger ">
-              {/* {test.transactionDate
-              ? "Please Enter valid transaction Date"
-              : ""} */}
-              {errors.transactionDate?.message}
-            </div>
-          </div>
+          {FormField("monthYear","select","Month Year",[register,errors],'',monthYear,year)}
+         
+          {FormField("transactionType","select","TransactionType",[register,errors],'',transactionType)}
 
-          <div className="mb-3">
-            <label htmlFor="monthYear" className="form-label">
-              Month Year
-            </label>
-            <select
-              {...register("monthYear")}
-              // defaultValue={updateData == undefined ? "" : updateData.monthYear}
-              className="form-select"
-              // onChange={MonthYear}
-
-              aria-label="Default select example"
-            >
-              <option value={""}>Select Month Year</option>
-
-              {monthYear.map((item, index) => (
-                <option key={item} value={index}>
-                  {item}
-                  {year}
-                </option>
-              ))}
-            </select>
-            <div className="form-text  text-danger ">
-              {/* {test.monthYear ? "Please Enter valid Month Year" : ""} */}
-              {errors.monthYear?.message}
-            </div>
-          </div>
-
-          {/* {FieldGenerator("monthYear","select",monthYear)} */}
-
-          <div className="mb-3">
-            <label htmlFor="transacType" className="form-label">
-              Transaction Type
-            </label>
-            <select
-              {...register("transactionType")}
-              // defaultValue={
-              //   updateData == undefined ? "" : updateData.transactionType
-              // }
-              className="form-select"
-              // onChange={checloginkTransactionType}
-              aria-label="Default select example"
-            >
-              <option value={""}>Select Transaction Type</option>
-              {transactionType.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <div className="form-text  text-danger ">
-              {/* {test.transactionType ? "Please Select Transaction Type" : ""} */}
-
-              {errors.transactionType?.message}
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="FromAccount" className="form-label">
-              From Account
-            </label>
-            <select
-              // defaultValue={updateData == undefined ? "" : updateData.from}
-              {...register("from")}
-              className="form-select"
-              aria-label="Default select example"
-              // onChange={(e) => {checkFrom(e)}}
-            >
-              <option value={""}>From Account</option>
-              {fromAccount.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <div i className="form-text text-danger">
-              {/* {test.amount ? "Please Enter only Numeric Values" : ""}
-               */}
-              {errors.from?.message}
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="toAccount" className="form-label">
-              To Account
-            </label>
-            <select
-              // defaultValue={updateData == undefined ? "" : updateData.to}
-              {...register("to")}
-              className="form-select"
-              aria-label="Default select example"
-              // onChange={checkTo}
-            >
-              <option value={""}>To Account</option>
-              {fromAccount.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <div className="form-text  text-danger ">
-              {/* {test.to ? "From and To must be not same" : ""} */}
-              {errors.to?.message}
-            </div>
-          </div>
+        
+          {FormField("from","select","From",[register,errors],'',fromAccount)}
+       
+           {FormField("to","select","To",[register,errors],'',fromAccount)}
 
           <div className="mb-3">
             <label htmlFor="amount" className="form-label">
@@ -392,28 +227,11 @@ const dispatch=useDispatch()   // dispatch
               <span className="crossButton" onClick={crossEvent}>X</span>
             </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="notes" className="form-label">
-              Notes
-            </label>
-            <div className="form-floating">
-              <textarea
-                className="form-control"
-                {...register("notes")}
-                //   defaultValue={updateData == undefined ? "" : updateData.notes}
-                //   onChange={checkNotes}
-                placeholder="Leave a comment here"
-                id="floatingTextarea"
-              ></textarea>
-              <label htmlFor="floatingTextarea">Enter Note Here</label>
-            </div>
-            <div i className="form-text text-danger">
-              {/* {test.notes
-              ? "You only Enter 250 or less Characters in notes"
-              : ""} */}
-              {errors.notes?.message}
-            </div>
-          </div>
+
+          {FormField("notes","textarea","Enter Notes",[register,errors],'Notes')}
+
+
+         
           <div className="text-center">
             <button
               type="submit"
@@ -423,8 +241,21 @@ const dispatch=useDispatch()   // dispatch
               Submit
             </button>
           </div>
+
         </form>
       </div>
+      <div className="toast-container">  <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      /></div>
     </div>
 
     </>
