@@ -1,0 +1,31 @@
+
+.container1{
+    margin: 50px 0px ;
+    border: 3px solid green;
+}
+
+.page{
+    margin: 60px 10px ; 
+    border: 2px solid green;
+    cursor: pointer;
+
+}
+
+.pageno{
+    margin: 20px 0px;
+}
+
+.logout{
+    text-align: end;
+}
+
+
+.sub-container1{
+
+    margin: 20px 0px ;
+    margin-right: 70%;
+}
+
+.searchButn{
+    margin-left: 70%;
+}
