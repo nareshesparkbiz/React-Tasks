@@ -4,6 +4,7 @@ import { useLocation, useParams,Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks'
 
 
+
 // import './css/index.css'
 
 
@@ -21,7 +22,10 @@ import { useAppSelector, useAppDispatch } from '../../../redux/hooks'
     const imgZoomOut:any=document.querySelector('.zoom-out')
 
     
-
+     const LanguageData=useAppSelector((state) => { 
+        return state.languageSelection;
+      });
+    
 
 useEffect(()=>{
     // const localData=localStorage.getItem('Formnew');
@@ -64,7 +68,7 @@ useEffect(()=>{
 },[])
  
 
-// console.log(currentuser,"--------------------------------------current user--------------------------------")
+ console.log(currentuser,"--------------------------------------current user--------------------------------")
 
 
 
@@ -150,35 +154,35 @@ imgZoomOut.style. visibility='hidden';
             <table>
                 <tbody>
                     <tr className="viewTr">
-                        <th>Transaction ID</th>
+                        <th> {LanguageData['transactionId']}: </th>
                         <td>{currentuser.id}</td>
                     </tr>
                     <tr className="viewTr">
-                    <th>Transaction Date:</th>
+                    <th> {LanguageData['transactionDate']} :</th>
                     <td>{currentuser.transactionDate}</td>
                     </tr>
                     <tr className="viewTr">             
-                    <th>Transaction Type:</th>
+                    <th> {LanguageData['transactionType']}:</th>
                     <td>{currentuser.transactionType}</td>
                     </tr>
                     <tr className="viewTr">             
-                    <th>Month Year:</th>
+                    <th> {LanguageData['monthYear']}:</th>
                     <td>{currentuser.monthYear}</td>
                     </tr >
                     <tr className="viewTr">             
-                    <th>From Account:</th>
+                    <th>  {LanguageData['from']} :</th>
                     <td>{currentuser.from}</td>
                     </tr>
                     <tr className="viewTr">             
-                    <th>To Account:</th>
+                    <th>  {LanguageData['to']} :</th>
                     <td>{currentuser.to}</td>
                     </tr>
                     <tr className="viewTr">             
-                    <th>Amount:</th>
+                    <th>{LanguageData['amount']} :</th>
                     <td>{currentuser.amount}</td>
                     </tr>
                     <tr className="viewTr">
-                        <th>Receipt:</th>
+                        <th>{LanguageData['receipt']}:</th>
                         
                         <td ><img src={currentuser.receipt} alt="receipt" className="imageTag box target"  height={100} width={100} /></td>
                     </tr>
@@ -195,7 +199,7 @@ imgZoomOut.style. visibility='hidden';
         </div>
         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         
-         <button><Link to="/all-transaction/view-transaction">Back To Transaction page</Link> </button>                
+         <button><Link to="/all-transaction/view-transaction">{LanguageData['backToTrans']}</Link> </button>                
         </div>
     </div>
 

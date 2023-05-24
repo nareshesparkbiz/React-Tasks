@@ -21,7 +21,7 @@ static getDerivedStateFromError(error){
 
 ComponentDidCatch(error,info)
 {
-   console.log('error,info::: ==========================================', Error,info);
+//    console.log('error,info::: ==========================================', Error,info);
 }
 
 

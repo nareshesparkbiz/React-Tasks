@@ -36,10 +36,10 @@ const FormField=(name:string,
   children?:React.ReactNode)=>{
   
   // const{}=props;
-  console.log('registerSchema::: ', schemaName);
+  // console.log('registerSchema::: ', schemaName);
 const [register,errors]=schemaName
  
-  console.log('errors::: ',register,errors);
+  // console.log('errors::: ',register,errors);
 
   
 
@@ -61,7 +61,7 @@ const [register,errors]=schemaName
     
                   
                   {options?.map((item:string, index:number) => {
-                    return( <option key={item} value={index}>{item}{extra}</option>
+                    return( <option key={item} value={item}>{item}{extra}</option>
 
                     )
                   

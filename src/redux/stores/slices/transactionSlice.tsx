@@ -1,6 +1,6 @@
 import {createSlice,PayloadAction} from '@reduxjs/toolkit';
-
-const initialState:Array<any> = []
+import {defaultTransactions} from '../../../utils/helper'
+const initialState:Array<any> =defaultTransactions
 
 const transactionSlice=createSlice({
     name:'userTransaction',

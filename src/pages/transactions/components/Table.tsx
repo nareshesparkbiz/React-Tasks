@@ -6,6 +6,7 @@ import {Pagination} from "./Pagination";
 // import '.././css/showTable.css'
 // import {userContext} from "../../../contexts/Context"
 import {amountFormatter} from '../../../utils/helper'
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks'
 import  {removeTransaction} from "../../../redux/stores/slices/transactionSlice";
 import { useDispatch } from "react-redux";
 
@@ -21,8 +22,11 @@ export const DataTable = (props:PropsData) => {
 
   const originalData=props.data;
 
-  console.log(originalData,"dtfdsadfgasdf")
+  // console.log(originalData,"dtfdsadfgasdf")
 
+   const LanguageData=useAppSelector((state) => { 
+    return state.languageSelection;
+  });
 
   
  
@@ -148,7 +152,7 @@ const [cuurentSortElement, setCuurentSortElement] = useState("");
     if (isSortClick === 0 || elementName !== cuurentSortElement) {
       // console.log("ASC - ", elementName);
       const shortedArray = dataSort(sort, elementName, "asc");
-      console.log(shortedArray,"Asc Array")
+      // console.log(shortedArray,"Asc Array")
 
       setsearched(shortedArray);
       const elementDom:any= document.querySelector('#'+elementName)
@@ -232,8 +236,8 @@ setsearched(filteredPersons)
     <>
 
 <div className="input-group ">
-  <input type="search" id="search" className="form-control rounded searchButn" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-  <button type="button" className="btn btn-outline-primary" onClick={searchHandler}>search</button>
+  <input type="search" id="search" className="form-control rounded searchButn" placeholder= {LanguageData['search']} aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" className="btn btn-outline-primary" onClick={searchHandler}>  {LanguageData['search']}</button>
 </div>
 
     <div className="container">
@@ -245,33 +249,33 @@ setsearched(filteredPersons)
               scope="col"
               onClick={() => convertSort(searched, "transactionDate")}
             >
-              Transaction Date <span id="transactionDate"></span>
+              {LanguageData['transactionDate']} <span id="transactionDate"></span>
             </th>
             <th scope="col" onClick={() => convertSort(searched, "monthYear")}>
-              Month Year<span id="monthYear"></span>
+            {LanguageData['monthYear']}<span id="monthYear"></span>
             </th>
             <th
               scope="col"
               onClick={() => convertSort(searched, "transactionType")}
             >
-              Transaction Type <span id="transactionType"></span>
+               {LanguageData['transactionType']} <span id="transactionType"></span>
             </th>
             <th scope="col" onClick={() => convertSort(searched, "from")}>
-              From Account <span id="from"></span>
+            {LanguageData['from']}  <span id="from"></span>
             </th>
             <th scope="col" onClick={() => convertSort(searched, "to")}>
-              To Account <span id="to"></span>
+            {LanguageData['to']} <span id="to"></span>
             </th>
             <th scope="col" onClick={() => convertSort(searched, "amount")}>
-              Amount <span id="amount"></span>
+            {LanguageData['amount']}  <span id="amount"></span>
             </th>
-            <th scope="col">Receipt</th>
+            <th scope="col"> {LanguageData['receipt']} </th>
             <th scope="col" onClick={() => convertSort(searched, "notes")}>
-              Notes <span id="notes"></span>
+            {LanguageData['notes']} <span id="notes"></span>
             </th>
-            <th scope="col">View</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col"> {LanguageData['view']} </th>
+            <th scope="col"> {LanguageData['edit']} </th>
+            <th scope="col"> {LanguageData['delete']} </th>
           </tr>
         </thead>
 
@@ -298,10 +302,10 @@ setsearched(filteredPersons)
                   to={`/all-transaction/edit-transaction/${element.id}`}
                   state={element}
                 >
-                 Edit
+                {LanguageData['edit']}
                 </Link>
               </td>
-              <td><button onClick={()=>{deleteTransaction(index)}}>Delete</button></td>
+              <td><button onClick={()=>{deleteTransaction(index)}}>{LanguageData['delete']}</button></td>
             </tr>
           ))}
         </tbody>

@@ -7,7 +7,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {notify} from '../../utils/helper'
 
-export const Logout = () => {
+
+interface typeLogout{
+  lang: string;
+}
+export const Logout = (props:typeLogout) => {
 
   const navigate = useNavigate();  //Navigation
 
@@ -54,7 +58,7 @@ const dispatch=useAppDispatch()             //Dispatcher
     <div>
       
 
-<button className="button-5" role="button" onClick={logoutHandler}>Logout</button>
+<button className="button-5" role="button" onClick={logoutHandler}>{props.lang}</button>
 <div className="toast-container">  <ToastContainer
       position="top-center"
       autoClose={1000}

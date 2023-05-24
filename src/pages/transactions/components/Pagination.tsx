@@ -1,6 +1,5 @@
 import '../../.././assets/styles/pagination.css'
-
-
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks'
 
 interface paginationType{
   list: string[];
@@ -20,18 +19,25 @@ export const Pagination = (props:typePagination) => {
     const pagination = props.page;
     const changepageno = props.changepageno;
   
+
+    const languageData=useAppSelector((state) => { 
+      return state.languageSelection;
+    });
+
+    console.log('languageData:::re ', languageData);
+  
     return (
       <div className="pages">
         {pagination.pageno - 1 >= 1 && (
           <>
             <div className="page1" onClick={() => changepageno(1)}>
-              <span>First-page</span>
+              <span>{languageData['firstPage']}</span>
             </div>
             <div
               className="page1"
               onClick={() => changepageno(pagination.pageno - 1)}
             >
-              <span>Prev</span>
+              <span>{languageData['prev']}</span>
             </div>
           </>
         )}
@@ -104,13 +110,13 @@ export const Pagination = (props:typePagination) => {
               className="page1"
               onClick={() => changepageno(pagination.pageno + 1)}
             >
-              <span>Next</span>
+              <span>{languageData['next']}</span>
             </div>
             <div
               className="page1"
               onClick={() => changepageno(pagination.totalpageCount)}
             >
-              <span>Last-page</span>
+              <span>{languageData['nextPage']}</span>
             </div>
           </>
         )}

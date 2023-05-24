@@ -34,7 +34,9 @@ const transactionData = useAppSelector((state) => {
   const [Groupby, setGroupby] = useState<any>();
   const [Grp, setGrp] = useState(true);
 
-  
+  const LanguageData=useAppSelector((state) => { 
+    return state.languageSelection;
+  });
 
 
   // const [isSortClick,setIsSortClick]=useState(0);
@@ -98,7 +100,7 @@ const transactionData = useAppSelector((state) => {
 <>
 <Navbar/>
 <div className="logout">
-<Logout/>
+<Logout lang={LanguageData['logout']}/>
 
 </div>
 
@@ -106,7 +108,7 @@ const transactionData = useAppSelector((state) => {
     data.length<=0?
     <div className="container">
     <div className="sub-container1">
-        Data Not Found 
+    {LanguageData['datanotfound']}
         </div>
         </div>
         :
@@ -136,20 +138,20 @@ const transactionData = useAppSelector((state) => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Transaction Date</th>
-                  <th scope="col">Month Year</th>
-                  <th scope="col">Transaction Type</th>
-                  <th scope="col">From Account </th>
-                  <th scope="col">To Account </th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">Receipt</th>
-                  <th scope="col">Notes</th>
-                  <th scope="col">View</th>
+                  <th scope="col">{LanguageData['transactionDate']}</th>
+                  <th scope="col">  {LanguageData['monthYear']}</th>
+                  <th scope="col">  {LanguageData['transactionType']}</th>
+                  <th scope="col"> {LanguageData['from']} </th>
+                  <th scope="col"> {LanguageData['to']} </th>
+                  <th scope="col">{LanguageData['amount']}</th>
+                  <th scope="col"> {LanguageData['receipt']}</th>
+                  <th scope="col">  {LanguageData['notes']}</th>
+                  <th scope="col">{LanguageData['view']}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colSpan={6}>Data Not Found</td>
+                  <td colSpan={6}>{LanguageData['datanotfound']}</td>
                 </tr>
               </tbody>
             </table>

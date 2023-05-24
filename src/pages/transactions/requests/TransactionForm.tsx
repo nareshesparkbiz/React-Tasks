@@ -3,7 +3,7 @@ import React, { useEffect,useRef,useState} from "react";
 import { useForm,FieldValues } from "react-hook-form";
 import {useParams, useNavigate} from "react-router-dom"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { monthYear, transactionType, fromAccount } from "../../../utils/constants"
+import { monthYear, transactionType, fromAccount,LanguageData } from "../../../utils/constants"
 import { convertImage,crossEvent } from "../../../utils/helper";
 import {transactionFormSchema} from "../../../utils/validation";
 import '../../../assets/styles/transactionForm.css'
@@ -14,6 +14,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {notify} from '../../../utils/helper'
 import FormField from '../../../components/FormFiels'
+import {addLanguage } from '../../../redux/stores/slices/languageSelection'
+import { useDispatch } from "react-redux";
 
 
 
@@ -30,13 +32,26 @@ export const AddTransaction = () => {
     return state.userTransactions;
   });
 
+  const selectLanguageData=useAppSelector((state) => { 
+    return state.languageSelection;
+  });
+  console.log('selectlanguageData::: ', selectLanguageData);
+
+  const [currentLang,setCurrentlang]=useState< { [key: string]: any }>(selectLanguageData);
+
+  useEffect(()=>{
+    setCurrentlang(selectLanguageData);
+  },[selectLanguageData])
+
 // console.log(transactionData,"redux data in login");
 
-const dispatch=useAppDispatch()   // dispatch
+const dispatch=useDispatch()   // dispatch
 
+// -----------------check data----------
 
-
-
+console.log('monthYear::: ', monthYear);
+console.log('transactionType::: ', transactionType);
+console.log('fromAccount::: ', fromAccount);
 
 //   const {transaction1,settransaction1}= useContext()
   const [currentuser,setcurrentUser]=useState< { [key: string]: undefined }>({});
@@ -94,6 +109,7 @@ const dispatch=useAppDispatch()   // dispatch
 
   const formhandler =handleSubmit(async(data) => {
 
+    console.log('data::: ', data);
     const newTransaction=[...transactionData]
     
 
@@ -157,39 +173,85 @@ const dispatch=useAppDispatch()   // dispatch
  setTimeout(()=>{navigate('/all-transaction/view-transaction')
 },2000)   });
 
+
+
+const changeLang=(event:React.ChangeEvent<HTMLSelectElement>)=>{
+  let langSelect=event.target.value;
+  console.log('langSelect::: ', langSelect);
+  dispatch(addLanguage(langSelect));
+
+
+}
+
   return (
 
     <>
     <Navbar/>
-    {console.log(errors,"Error")}
+    {/* {console.log(currentLang['transationDate'],"Error")} */}
+<div className="dropDown">
+  <select name="lang" id="lang" onChange={(e)=>{changeLang(e)}}>
+    <option value="English">English</option>
+    <option value="Hindi">Hindi</option>
+  </select>
+</div>
 
     <div className="container">
       <div className="subcontainer">
-        {id == undefined ? "" : <h1>Edit Form</h1>}
-        <h2 className="header-h2">Finance Tracker</h2>
-       
+        {id == undefined ? "" : <h1>{currentLang['editForm']}</h1>}
+        <h2 className="header-h2">{currentLang['financetracker']}</h2>
+      
         <form onSubmit={formhandler}>
-           {FormField("transactionDate","Date","Transaction Date",[register,errors])}
+           {FormField("transactionDate","Date",currentLang['transactionDate'],[register,errors])}
           
       
 
-           {FormField("monthYear","select","Month Year",[register,errors],'',monthYear,year)}
+           {/* {FormField("monthYear","select",currentLang['monthYear'],[register,errors],'',monthYear,year)} */}
+           <div className="mb-3">
+                <label htmlFor="Month Year" className="form-label">
+                Month Year
+                </label>
+                <select
+                  className="form-select"
+                  {...register('monthYear', { required: true })}
+              
+
+                  aria-label="Default select example"
+                >
+               <option value={""}>Select MonthYear</option>
+    
+                  
+                  {monthYear?.map((item:string, index:number) => {
+                    return( <option key={item} value={index}>{item}{year}</option>
+
+                    )
+                  
+                    
+                   
+                    
+                       })}
+                
+                </select>
+                <div className="form-text  text-danger ">
+            
+                  {errors.monthYear?.message?.toString()}
+                </div>
+              </div>
            
          
-          {FormField("transactionType","select","TransactionType",[register,errors],'',transactionType)}
+          {FormField("transactionType","select",currentLang['transactionType'],[register,errors],'',transactionType)}
 
         
-          {FormField("from","select","From",[register,errors],'',fromAccount)}
+          {FormField("from","select",currentLang['from'],[register,errors],'',fromAccount)}
        
-           {FormField("to","select","To",[register,errors],'',fromAccount)}
+           {FormField("to","select",currentLang['to'],[register,errors],'',fromAccount)}
 
           <div className="mb-3">
             <label htmlFor="amount" className="form-label">
-              Amount
+            {currentLang['amount']}
             </label>
 
             <div className="input-group mb-3">
-              <span className="input-group-text">Rs</span>
+              <span className="input-group-text">   {currentLang['Rs']}</span>
               <input
                 type="text"
                 className="form-control"
@@ -208,7 +270,7 @@ const dispatch=useAppDispatch()   // dispatch
 
           <div className="mb-3">
             <label htmlFor="receipt" className="form-label">
-              Receipt
+            {currentLang['receipt']}
             </label>
             <input
               type="file"
@@ -233,7 +295,7 @@ const dispatch=useAppDispatch()   // dispatch
             </div>
           </div>
 
-          {FormField("notes","textarea","Enter Notes",[register,errors],'Notes')}
+          {FormField("notes","textarea",currentLang['notes'],[register,errors],'Notes')}
 
 
          
@@ -243,8 +305,8 @@ const dispatch=useAppDispatch()   // dispatch
               className="btn btn-success center"
               // onSubmit={formhandler}
             >
-              Submit
-            </button>
+             { currentLang['submit']
+            }            </button>
           </div>
 
         </form>

@@ -24,8 +24,14 @@
 
     margin: 20px 0px ;
     margin-right: 70%;
+    border: 2px solid greenyellow;
+    width: 100%;
+    padding: 50px;
+    font-weight: bold;
+    
 }
 
 .searchButn{
     margin-left: 70%;
 }
+
