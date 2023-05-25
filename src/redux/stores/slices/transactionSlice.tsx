@@ -1,6 +1,11 @@
 import {createSlice,PayloadAction} from '@reduxjs/toolkit';
+import { TransactionType } from '../../../model/type';
 import {defaultTransactions} from '../../../utils/helper'
-const initialState:Array<any> =defaultTransactions
+
+
+
+
+const initialState:any[]=defaultTransactions
 
 const transactionSlice=createSlice({
     name:'userTransaction',
@@ -10,8 +15,11 @@ const transactionSlice=createSlice({
             state.push(action.payload)
             
         },
-        removeTransaction(state,action:PayloadAction<any>){
-            state.splice(action.payload,1)
+        removeTransaction(state,action:PayloadAction<number>){
+            console.log(action.payload, typeof action.payload)
+            const newdata = [...state];
+
+            return newdata.filter((item)=> item.id!==action.payload);
         },
         editTransaction(state,action:PayloadAction<any>){
             for(let i in state){
@@ -25,12 +33,10 @@ const transactionSlice=createSlice({
             }
 
         },
-        viewTransaction(state,action:PayloadAction<string>){
-
-        },
+ 
 
     }
 })
-// console.log(transactionSlice.actions)
-export const  {addTransaction,removeTransaction,editTransaction,viewTransaction}=transactionSlice.actions
+
+export const  {addTransaction,removeTransaction,editTransaction}=transactionSlice.actions
 export default transactionSlice;

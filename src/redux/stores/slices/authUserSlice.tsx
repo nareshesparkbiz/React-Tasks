@@ -1,27 +1,11 @@
 import {createSlice,PayloadAction} from '@reduxjs/toolkit';
+import { UserType } from '../../../model/type';
 
 
 
   
   
-// Define the initial state using that type
- 
-// type SliceState = {
-    
-//       id: string;
-//       user: {
-//         name: string;
-//         email: string;
-//         password: string;
-//         respassword: string;
-//       };
-//       token?: string;
-    
-//     }[];
-
-
-// const initialState: any[] =[]
-const initialState:any[]=[]
+const initialState:UserType[]=[]
 
 
 
@@ -31,7 +15,7 @@ const authUserSlice=createSlice({
     name:'authUser',
     initialState,
     reducers:{
-        addUser(state,action:PayloadAction<any>){
+        addUser(state,action:PayloadAction<UserType>){
             state.push(action.payload)
             
         },
@@ -44,6 +28,6 @@ const authUserSlice=createSlice({
 
     }
 })
-// console.log(authUserSlice.actions)
+
 export const  {addUser,addToken,removeToken}=authUserSlice.actions
 export default authUserSlice;
