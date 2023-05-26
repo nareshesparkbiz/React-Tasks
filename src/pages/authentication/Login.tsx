@@ -89,7 +89,7 @@ export const Login = () => {
         notify("🦄 Login SuccesFully ");
         saveToCookie("authToken", tokenData);
         setTimeout(() => {
-          navigate("/all-transaction/view-transaction");
+          navigate("/");
         }, 2000);
       }
     }

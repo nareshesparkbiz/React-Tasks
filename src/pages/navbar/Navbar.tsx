@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { addLanguage } from "../../redux/stores/slices/languageSelection";
+import logo from "../../assets/images/logo.png";
+
 
 export function Navbar() {
   const dispatch = useAppDispatch();
@@ -21,7 +23,9 @@ export function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
+
       <div className="container-fluid">
+        <div><img src={logo} alt="Logo" style={{height:'45px',width:"45px",margin:"0px 15px"}} /></div>
         <a className="navbar-brand">{LanguageData["financetracker"]}</a>
         <button
           className="navbar-toggler"

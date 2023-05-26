@@ -12,7 +12,7 @@ import {
   fromAccount,
 } from "../../../utils/constants";
 import { convertImage } from "../../../utils/helper";
-import { transactionFormSchema } from "../../../utils/validation";
+import { transactionFormSchema } from "../../../validations/validation";
 import "../../../assets/styles/transactionForm.css";
 import {
   addTransaction,
@@ -229,7 +229,7 @@ export const AddTransaction = () => {
                     id="imagefile"
                     {...register("receipt", {
                       onChange: async (e) => {
-                        let file = await convertImage(e.target.files[0]);
+                        let file :any= await convertImage(e.target.files[0]);
 
                         console.log(file);
 

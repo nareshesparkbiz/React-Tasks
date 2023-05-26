@@ -12,7 +12,7 @@ export const tokenGenerator = () => {
   return ans;
 };
 
-export const convertImage = async (file) => {
+export const convertImage = async (file:any) => {
   let newURL = new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -22,23 +22,23 @@ export const convertImage = async (file) => {
   return newURL;
 };
 
-export function amountFormatter(amount) {
-  const numberFormat = (value) =>
+export function amountFormatter(amount:string) {
+  const numberFormat = (value:number) =>
     new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
     }).format(value);
 
-  let finalAmount = numberFormat(amount);
+  let finalAmount = numberFormat(Number(amount));
 
   return finalAmount;
 }
 
-export const saveToCookie = (COOKIE_NAME, data) => {
+export const saveToCookie = (COOKIE_NAME:string, data:string) => {
   document.cookie = `${COOKIE_NAME}=${JSON.stringify(data)}`;
 };
 
-export const notify = (props) => {
+export const notify = (props:string) => {
   toast.success(props, {
     position: "top-center",
     autoClose: 1000,
@@ -51,7 +51,7 @@ export const notify = (props) => {
   });
 };
 
-export const alertnotify = (props) => {
+export const alertnotify = (props:string) => {
   toast.error(props, {
     position: "top-center",
     autoClose: 2000,

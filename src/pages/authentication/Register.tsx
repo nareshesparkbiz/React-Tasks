@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { Navbar } from "../navbar/Navbar";
 import { addUser } from "../../redux/stores/slices/authUserSlice";
-import { registerSchema } from "../../utils/validation";
+import { registerSchema } from "../../validations/validation";
 import { notify, alertnotify } from "../../utils/helper";
 import FormField from "../../components/FormFiels";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";

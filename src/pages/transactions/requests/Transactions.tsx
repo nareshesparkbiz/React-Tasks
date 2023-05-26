@@ -79,8 +79,10 @@ export const ShowTable = () => {
               {grptype && Object.keys(Groupby).length !== 0 ? (
                 Object.keys(Groupby)?.map((item, index) => (
                   <>
-                  <h1>{item}</h1>
+                 
                     <div className="container1">
+                      
+                       <p style={{fontSize:'35px',fontWeight:"bold" ,color:'green'}}>{item}</p>
                       <DataTable data={Groupby[item]} />
                     </div>
                   </>
