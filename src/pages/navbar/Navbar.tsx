@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { addLanguage } from "../../redux/stores/slices/languageSelection";
 import logo from "../../assets/images/logo.png";
+import { addselectedLang } from "../../redux/stores/slices/selectedLang";
 
 
 export function Navbar() {
   const dispatch = useAppDispatch();
   const token = document.cookie;
+  // const[langSelect,setLangSelect]=useState<string>("English");
   const changeLang = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let langSelect = event.target.value;
+    // setLangSelect(langselect)
+    
 
+    dispatch(addselectedLang(langSelect))
     const mySelect = document.getElementById("selectLang");
     mySelect?.ariaSelected;
     dispatch(addLanguage(langSelect));
@@ -20,6 +25,12 @@ export function Navbar() {
   const LanguageData = useAppSelector((state) => {
     return state.languageSelection;
   });
+
+  const selectedlang = useAppSelector((state) => {
+    return state.langSelected;
+  });
+  
+
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -98,8 +109,20 @@ export function Navbar() {
               changeLang(e);
             }}
           >
-            <option value="English">English</option>
+             {selectedlang==="English"?
+          <option value="English" selected >English</option>
+          :
+          <option value="English"  >English</option>
+        }
+         
+            {selectedlang==="Hindi"?
+            <option value="Hindi" selected>Hindi</option>
+            :
             <option value="Hindi">Hindi</option>
+            }
+        
+       
+           
           </select>
         </div>
       </div>

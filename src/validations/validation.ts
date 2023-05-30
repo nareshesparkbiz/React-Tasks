@@ -36,7 +36,7 @@ export const transactionFormSchema = yup.object().shape({
       "type",
       "Only the following formats are accepted: .jpeg, .jpg,.png,.bmp",
       (value: any) => {
-        console.log(value, typeof value, "1---------------------dfgbdf");
+        // console.log(value, typeof value, "1---------------------dfgbdf");
         if (value) {
           if (typeof value === "string") {
             return true;

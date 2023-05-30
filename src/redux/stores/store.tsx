@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authUserSlice from "./slices/authUserSlice"
 import transactionSlice from "./slices/transactionSlice"
 import languageSelectionSlice from "./slices/languageSelection"
+import selectedlangSlice from "./slices/selectedLang"
 
 
 
@@ -12,6 +13,8 @@ const store=configureStore({
         authUser:authUserSlice.reducer,
         userTransactions:transactionSlice.reducer,
         languageSelection:languageSelectionSlice.reducer,
+        langSelected:selectedlangSlice.reducer,
+        
 
     }
 
